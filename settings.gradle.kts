@@ -9,16 +9,26 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        google()
+
+        /* disable for using jitpack*/
+        mavenLocal()
+//        maven("https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        gradlePluginPortal()
+        google()
+
+        /* disable for using jitpack*/
+        mavenLocal()
+//        maven("https://jitpack.io")
     }
 }
 
 rootProject.name = "android-mtv-based-core"
 include(":app")
- 
+include(":network")

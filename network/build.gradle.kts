@@ -1,23 +1,25 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.signing)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
-    namespace = "com.mtv.based.core"
-    compileSdk = 36
+    namespace = "com.mtv.based.core.network"
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
-        applicationId = "com.mtv.based.core"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -29,23 +31,15 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-
-    buildFeatures {
-        compose = true
+        jvmTarget = "11"
     }
 }
 dependencies {
-    implementation(project(":network"))
-
     // Kotlin Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
@@ -108,17 +102,17 @@ dependencies {
     implementation("com.mtv.based.uicomponent:component-badge:1.0.0")
     implementation("com.mtv.based.uicomponent:component-checkbox:1.0.0")
 
-
-    /* JitPack Libraries */
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:core-ui:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:theme-ui:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-button:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-input:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-dialog:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-bottom-sheet:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-card:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-badge:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-checkbox:v1.0.2")
-
+    // Jitpack Maven Libraries (UI Components)
+    /*
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:core-ui:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:theme-ui:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-button:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-input:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-dialog:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-bottom-sheet:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-card:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-badge:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-checkbox:v1.0.2")
+    */
 }
