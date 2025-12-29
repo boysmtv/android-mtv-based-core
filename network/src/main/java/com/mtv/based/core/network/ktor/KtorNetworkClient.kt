@@ -1,0 +1,53 @@
+package com.mtv.based.core.network.ktor
+
+import com.mtv.based.core.network.utils.NetworkClientInterface
+import com.mtv.based.core.network.utils.NetworkConfig
+import com.mtv.based.core.network.utils.NetworkResponse
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import javax.inject.Inject
+
+class KtorNetworkClient @Inject constructor(
+    private val client: HttpClient
+) : NetworkClientInterface {
+
+    override suspend fun get(
+        endpoint: String,
+        query: Map<String, String>,
+        headers: Map<String, String>
+    ): NetworkResponse {
+        val response = client.get("${NetworkConfig.BASE_URL}$endpoint") {
+            query.forEach { (k, v) -> parameter(k, v) }
+            headers.forEach { (k, v) -> header(k, v) }
+        }
+
+        return NetworkResponse(
+            body = response.bodyAsText(),
+            httpCode = response.status.value
+        )
+    }
+
+    override suspend fun post(
+        endpoint: String,
+        body: Any,
+        headers: Map<String, String>
+    ): NetworkResponse {
+        val response = client.post("${NetworkConfig.BASE_URL}$endpoint") {
+            contentType(ContentType.Application.Json)
+            setBody(body)
+            headers.forEach { (k, v) -> header(k, v) }
+        }
+
+        return NetworkResponse(
+            body = response.bodyAsText(),
+            httpCode = response.status.value
+        )
+    }
+}
