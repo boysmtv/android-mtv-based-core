@@ -1,5 +1,7 @@
 package com.mtv.based.core.network.utils
 
+import android.graphics.Mesh
+
 sealed interface UiError {
     val message: String
 
@@ -15,9 +17,13 @@ sealed interface UiError {
         override val message = "Server sedang bermasalah"
     }
 
-    data object Network : UiError {
-        override val message = "Periksa koneksi internet"
+    data class Network(var error: String) : UiError {
+        override val message = "Periksa koneksi internet - error"
     }
+
+    data class IO(
+        override val message: String
+    ) : UiError
 
     data class Unknown(
         override val message: String

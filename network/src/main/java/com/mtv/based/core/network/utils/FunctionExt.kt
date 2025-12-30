@@ -23,10 +23,10 @@ fun Throwable.toUiError(): UiError =
     when (this) {
 
         is NetworkException ->
-            UiError.Network
+            UiError.Network(message ?: "Network error")
 
         is IOException ->
-            UiError.Network
+            UiError.IO(message ?: "Network error")
 
         is HttpException -> {
             when (code()) {
