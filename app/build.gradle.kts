@@ -97,8 +97,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Local Maven Libraries (UI Components)
-    implementation("com.mtv.based.uicomponent:core-ui:1.0.0")
+    /* Maven Local Libraries (UI Components) */
+    /*implementation("com.mtv.based.uicomponent:core-ui:1.0.0")
     implementation("com.mtv.based.uicomponent:theme-ui:1.0.0")
     implementation("com.mtv.based.uicomponent:component-button:1.0.0")
     implementation("com.mtv.based.uicomponent:component-input:1.0.0")
@@ -106,19 +106,18 @@ dependencies {
     implementation("com.mtv.based.uicomponent:component-bottom-sheet:1.0.0")
     implementation("com.mtv.based.uicomponent:component-card:1.0.0")
     implementation("com.mtv.based.uicomponent:component-badge:1.0.0")
-    implementation("com.mtv.based.uicomponent:component-checkbox:1.0.0")
+    implementation("com.mtv.based.uicomponent:component-checkbox:1.0.0")*/
 
-
-    /* JitPack Libraries */
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:core-ui:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:theme-ui:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-button:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-input:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-dialog:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-bottom-sheet:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-card:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-badge:v1.0.2")
-//    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-checkbox:v1.0.2")
+    /* JitPack Libraries (UI Components) */
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:core-ui:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:theme-ui:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-button:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-input:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-dialog:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-bottom-sheet:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-card:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-badge:v1.0.2")
+    implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-checkbox:v1.0.2")
 
 }
