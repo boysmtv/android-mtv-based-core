@@ -9,14 +9,20 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
+import kotlin.reflect.KClass
 
-abstract class BaseUseCase<P, T>(
-    private val dispatcher: CoroutineDispatcher
+abstract class BaseUseCase<P, T : Any>(
+    private val dispatcher: CoroutineDispatcher,
+    clazz: KClass<T>
 ) {
-
-    abstract val serializer: KSerializer<T>
+    @OptIn(InternalSerializationApi::class)
+    protected val serializer: KSerializer<T> = clazz.serializer()
+    protected val json = Json { ignoreUnknownKeys = true }
 
     operator fun invoke(param: P): Flow<Resource<T>> = flow {
         emit(Resource.Loading)
@@ -34,15 +40,17 @@ abstract class BaseUseCase<P, T>(
     protected open fun handleResponse(raw: NetworkResponse): Resource<T> {
         return when (raw.httpCode) {
             in 200..299 -> {
-                val baseResponse = Json.decodeFromString(
-                    BaseResponse.serializer(serializer),
-                    raw.body
-                )
-
-                baseResponse.data?.let { Resource.Success(it) }
-                    ?: Resource.Error(UiError.Unknown(baseResponse.message))
+                try {
+                    val baseResponse = json.decodeFromString(
+                        BaseResponse.serializer(serializer),
+                        raw.body
+                    )
+                    baseResponse.data?.let { Resource.Success(it) }
+                        ?: Resource.Error(UiError.Unknown(baseResponse.message))
+                } catch (e: SerializationException) {
+                    Resource.Error(UiError.Unknown("Invalid JSON: ${e.message}"))
+                }
             }
-
             401 -> Resource.Error(UiError.Unauthorized)
             403 -> Resource.Error(UiError.Forbidden)
             in 500..599 -> Resource.Error(UiError.Server)
@@ -50,5 +58,3 @@ abstract class BaseUseCase<P, T>(
         }
     }
 }
-
-

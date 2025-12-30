@@ -12,8 +12,8 @@ pluginManagement {
         google()
 
         /* disable for using jitpack*/
-//        mavenLocal()
-        maven("https://jitpack.io")
+        mavenLocal()
+//        maven("https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
@@ -24,11 +24,12 @@ dependencyResolutionManagement {
         google()
 
         /* disable for using jitpack*/
-//        mavenLocal()
-        maven("https://jitpack.io")
+        mavenLocal()
+//        maven("https://jitpack.io")
     }
 }
 
 rootProject.name = "android-mtv-based-core"
 include(":app")
 include(":network")
+include(":provider")

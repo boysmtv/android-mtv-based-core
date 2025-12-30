@@ -7,16 +7,12 @@ import com.mtv.based.core.network.usecase.BaseUseCase
 import com.mtv.based.core.network.utils.NetworkRepository
 import com.mtv.based.core.network.utils.NetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.serialization.KSerializer
 import javax.inject.Inject
 
 class GetUsersUseCase @Inject constructor(
     private val repository: NetworkRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : BaseUseCase<Unit, NameResponse>(dispatcher) {
-
-    override val serializer: KSerializer<NameResponse>
-        get() = NameResponse.serializer()
+) : BaseUseCase<Unit, NameResponse>(dispatcher, NameResponse::class) {
 
     override suspend fun execute(param: Unit): NetworkResponse {
         return repository.get(ApiEndPoint.getUser)
