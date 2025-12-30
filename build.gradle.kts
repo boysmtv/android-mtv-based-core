@@ -55,7 +55,8 @@ tasks.register("publishAllModulesToMavenLocal") {
     description = "Clean, assemble release, and publish all modules to Maven Local"
 
     val modules = listOf(
-        ":network"
+        ":network",
+        ":provider"
     )
 
     modules.forEach { modulePath ->

@@ -2,9 +2,9 @@ package com.mtv.based.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mtv.based.core.network.utils.Resource
-import com.mtv.based.core.NameResponse
+import com.mtv.app.core.provider.based.BaseViewModel
 import com.mtv.based.core.model.CreateUserRequest
+import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.usecase.CreateUserUseCase
 import com.mtv.based.core.usecase.GetUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NetworkViewModel @Inject constructor(
+class NetworkViewModels @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase,
     private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
@@ -40,4 +40,27 @@ class NetworkViewModel @Inject constructor(
             }
         }
     }
+}
+
+@HiltViewModel
+class NetworkViewModel @Inject constructor(
+    private val getUsersUseCase: GetUsersUseCase,
+    private val createUserUseCase: CreateUserUseCase
+) : BaseViewModel() {
+
+    val users = MutableStateFlow<Resource<NameResponse>>(Resource.Loading)
+    val createUserResponse = MutableStateFlow<Resource<NameResponse>>(Resource.Loading)
+
+    fun fetchUsers() {
+        launchUseCase(users) {
+            getUsersUseCase(Unit)
+        }
+    }
+
+    fun createUser(name: String, email: String, age: Int) {
+        launchUseCase(createUserResponse) {
+            createUserUseCase(CreateUserRequest(name, email, age))
+        }
+    }
+
 }

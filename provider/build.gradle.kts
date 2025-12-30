@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mtv.based.core.network"
+    namespace = "com.mtv.based.core.provider"
     compileSdk {
         version = release(36)
     }
@@ -40,6 +40,8 @@ android {
     }
 }
 dependencies {
+    implementation(project(":network"))
+
     // Kotlin Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
