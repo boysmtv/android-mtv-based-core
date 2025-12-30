@@ -91,7 +91,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Local Maven Libraries (UI Components)
+    /* Maven Local Libraries (UI Components) */
+    /*
     implementation("com.mtv.based.uicomponent:core-ui:1.0.0")
     implementation("com.mtv.based.uicomponent:theme-ui:1.0.0")
     implementation("com.mtv.based.uicomponent:component-button:1.0.0")
@@ -101,9 +102,9 @@ dependencies {
     implementation("com.mtv.based.uicomponent:component-card:1.0.0")
     implementation("com.mtv.based.uicomponent:component-badge:1.0.0")
     implementation("com.mtv.based.uicomponent:component-checkbox:1.0.0")
+    */
 
-    // Jitpack Maven Libraries (UI Components)
-    /*
+    /* JitPack Libraries (UI Components) */
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:v1.0.2")
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:core-ui:v1.0.2")
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:theme-ui:v1.0.2")
@@ -114,5 +115,4 @@ dependencies {
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-card:v1.0.2")
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-badge:v1.0.2")
     implementation("com.github.boysmtv:android-mtv-based-uicomponent:component-checkbox:v1.0.2")
-    */
 }
