@@ -1,14 +1,17 @@
 package com.mtv.based.core.network.retrofit
 
-import com.mtv.based.core.network.utils.NetworkConfig
 import com.mtv.based.core.network.utils.NetworkClientInterface
+import com.mtv.based.core.network.utils.NetworkConfigProvider
 import com.mtv.based.core.network.utils.NetworkResponse
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class RetrofitNetworkClient @Inject constructor(
-    private val apiService: RetrofitApi
+    private val apiService: RetrofitApi,
+    config: NetworkConfigProvider,
 ) : NetworkClientInterface {
+
+    val baseUrl = config.provide().baseUrl
 
     override suspend fun get(
         endpoint: String,
@@ -16,7 +19,7 @@ class RetrofitNetworkClient @Inject constructor(
         headers: Map<String, String>
     ): NetworkResponse {
         val response = apiService.getData(
-            "${NetworkConfig.BASE_URL}$endpoint",
+            "${baseUrl}$endpoint",
             query,
             headers
         )
@@ -37,7 +40,7 @@ class RetrofitNetworkClient @Inject constructor(
         headers: Map<String, String>
     ): NetworkResponse {
         val response = apiService.postData(
-            "${NetworkConfig.BASE_URL}$endpoint",
+            "${baseUrl}$endpoint",
             body,
             headers
         )
