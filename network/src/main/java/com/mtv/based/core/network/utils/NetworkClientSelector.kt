@@ -5,10 +5,11 @@ import com.mtv.based.core.network.di.RetrofitClient
 import javax.inject.Inject
 
 class NetworkClientSelector @Inject constructor(
+    private val config: NetworkConfigProvider,
     @KtorClient private val ktor: NetworkClientInterface,
     @RetrofitClient private val retrofit: NetworkClientInterface
 ) {
 
     fun get(): NetworkClientInterface =
-        if (NetworkConfig.USE_KTOR) ktor else retrofit
+        if (config.provide().useKtor) ktor else retrofit
 }

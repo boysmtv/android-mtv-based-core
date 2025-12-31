@@ -4,7 +4,7 @@ import com.mtv.based.core.network.ktor.KtorNetworkClient
 import com.mtv.based.core.network.retrofit.RetrofitApi
 import com.mtv.based.core.network.retrofit.RetrofitNetworkClient
 import com.mtv.based.core.network.utils.NetworkClientInterface
-import com.mtv.based.core.network.utils.NetworkConfig
+import com.mtv.based.core.network.utils.NetworkConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,9 +42,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit =
+    fun provideRetrofit(
+        config: NetworkConfigProvider
+    ): Retrofit =
         Retrofit.Builder()
-            .baseUrl(NetworkConfig.BASE_URL)
+            .baseUrl(config.provide().baseUrl)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -59,15 +61,17 @@ object NetworkModule {
     @Singleton
     @KtorClient
     fun provideKtorNetworkClient(
-        httpClient: HttpClient
+        httpClient: HttpClient,
+        config: NetworkConfigProvider
     ): NetworkClientInterface =
-        KtorNetworkClient(httpClient)
+        KtorNetworkClient(httpClient, config)
 
     @Provides
     @Singleton
     @RetrofitClient
     fun provideRetrofitNetworkClient(
-        apiService: RetrofitApi
+        apiService: RetrofitApi,
+        config: NetworkConfigProvider
     ): NetworkClientInterface =
-        RetrofitNetworkClient(apiService)
+        RetrofitNetworkClient(apiService, config)
 }

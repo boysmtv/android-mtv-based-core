@@ -60,7 +60,7 @@ tasks.register("publishAllModulesToMavenLocal") {
     )
 
     modules.forEach { modulePath ->
-        dependsOn("${modulePath}:clean")
+//        dependsOn("${modulePath}:clean")
         dependsOn("${modulePath}:assembleRelease")
         dependsOn("${modulePath}:publishToMavenLocal")
     }
