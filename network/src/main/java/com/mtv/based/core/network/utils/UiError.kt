@@ -1,7 +1,5 @@
 package com.mtv.based.core.network.utils
 
-import android.graphics.Mesh
-
 sealed interface UiError {
     val message: String
 
