@@ -38,6 +38,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 dependencies {
     // Kotlin Coroutines
@@ -62,6 +65,7 @@ dependencies {
     // Ktor Client
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
 
@@ -76,7 +80,6 @@ dependencies {
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.material3)
 
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
@@ -90,6 +93,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Chucker
+    debugImplementation(libs.chucker.debug)
+    releaseImplementation(libs.chucker.release)
 
     /* Maven Local Libraries (UI Components) */
     implementation("com.mtv.based.uicomponent:component:1.0.0")
