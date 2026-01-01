@@ -1,6 +1,5 @@
 package com.mtv.based.core.network.di
 
-import com.mtv.based.core.network.BuildConfig
 import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -42,7 +41,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideKtorHttpClient(): HttpClient =
+    fun provideKtorHttpClient(
+        provider: NetworkConfigProvider
+    ): HttpClient =
         HttpClient(CIO) {
 
             install(ContentNegotiation) {
@@ -55,7 +56,7 @@ object NetworkModule {
                         Log.d("KtorLogger", message)
                     }
                 }
-                level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
+                level = if (provider.provide().isDebug) LogLevel.ALL else LogLevel.NONE
             }
         }
 
