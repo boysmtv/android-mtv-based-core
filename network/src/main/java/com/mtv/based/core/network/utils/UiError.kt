@@ -15,8 +15,10 @@ sealed interface UiError {
         override val message = "Server sedang bermasalah"
     }
 
-    data class Network(var error: String) : UiError {
-        override val message = "Periksa koneksi internet - error"
+    data class Network(
+        val error: String
+    ) : UiError {
+        override val message: String = error.ifBlank { "Periksa koneksi internet" }
     }
 
     data class IO(
@@ -26,4 +28,5 @@ sealed interface UiError {
     data class Unknown(
         override val message: String
     ) : UiError
+
 }

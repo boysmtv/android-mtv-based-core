@@ -3,6 +3,7 @@ package com.mtv.app.core.provider.based
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mtv.based.core.network.utils.Resource
+import com.mtv.based.core.network.utils.UiError
 import com.mtv.based.uicomponent.core.component.dialog.dialogv1.ErrorDialogStateV1
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,31 +24,34 @@ abstract class BaseViewModel : ViewModel() {
             block().collect { result ->
                 target.value = result
 
-                _baseUiState.update { state ->
-                    state.copy(isLoading = result is Resource.Loading)
+                _baseUiState.update {
+                    it.copy(isLoading = result is Resource.Loading)
                 }
 
                 if (result is Resource.Error) {
-                    showError(
-                        ErrorDialogStateV1(
-                            title = "Warning",
-                            message = result.error.message
-                        )
-                    )
+                    showError(result.error)
                 }
             }
         }
     }
 
-    protected fun showError(error: ErrorDialogStateV1) {
-        _baseUiState.update { state ->
-            state.copy(errorDialog = error)
+    protected fun showError(error: UiError) {
+        val message = error.message.takeIf { it.isNotBlank() }
+            ?: "Terjadi kesalahan"
+
+        _baseUiState.update {
+            it.copy(
+                errorDialog = ErrorDialogStateV1(
+                    message = message
+                )
+            )
         }
     }
 
     fun dismissError() {
-        _baseUiState.update { state ->
-            state.copy(errorDialog = null)
+        _baseUiState.update {
+            it.copy(errorDialog = null)
         }
     }
 }
+
