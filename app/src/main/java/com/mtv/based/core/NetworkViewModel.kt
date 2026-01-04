@@ -57,7 +57,7 @@ class NetworkViewModel @Inject constructor(
         }
     }
 
-    fun createUser(name: String, email: String, age: Int) {
+    fun doLogin(name: String, email: String, age: Int) {
         launchUseCase(createUserResponse) {
             createUserUseCase(CreateUserRequest(name, email, age))
         }

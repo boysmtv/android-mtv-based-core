@@ -3,10 +3,10 @@ package com.mtv.based.core.network.di
 import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.mtv.based.core.network.ktor.KtorNetworkClient
-import com.mtv.based.core.network.retrofit.RetrofitApi
-import com.mtv.based.core.network.retrofit.RetrofitNetworkClient
-import com.mtv.based.core.network.utils.NetworkClientInterface
+import com.mtv.based.core.network.client.KtorNetworkClient
+import com.mtv.based.core.network.client.RetrofitApi
+import com.mtv.based.core.network.client.RetrofitNetworkClient
+import com.mtv.based.core.network.client.NetworkClientInterface
 import com.mtv.based.core.network.utils.NetworkConfigProvider
 import dagger.Module
 import dagger.Provides

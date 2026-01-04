@@ -71,6 +71,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.play.services.cast.framework)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 

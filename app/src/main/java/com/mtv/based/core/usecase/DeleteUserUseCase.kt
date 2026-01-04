@@ -1,27 +1,28 @@
+/*
+ * Project: Boys.mtv@gmail.com
+ * File: DeleteUserUseCase.kt
+ *
+ * Last modified by Dedy Wijaya on 04/01/2026 21.14
+ */
+
 package com.mtv.based.core.usecase
 
-
-import com.mtv.based.core.NameResponse
-import com.mtv.based.core.model.CreateUserRequest
 import com.mtv.based.core.network.di.IoDispatcher
 import com.mtv.based.core.endpoint.ApiEndPoint
 import com.mtv.based.core.network.usecase.BaseUseCase
 import com.mtv.based.core.network.repository.NetworkRepository
 import com.mtv.based.core.network.model.NetworkResponse
-import com.mtv.based.core.network.model.RequestOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-class CreateUserUseCase @Inject constructor(
+class DeleteUserUseCase @Inject constructor(
     private val repository: NetworkRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : BaseUseCase<CreateUserRequest, NameResponse>(dispatcher, NameResponse::class) {
+) : BaseUseCase<String, Unit>(dispatcher, Unit::class) {
 
-    override suspend fun execute(param: CreateUserRequest): NetworkResponse {
+    override suspend fun execute(param: String): NetworkResponse {
         return repository.request(
-            endpoint = ApiEndPoint.CreateUser,
-            body = param
+            endpoint = ApiEndPoint.DeleteUser(id = param)
         )
     }
-
 }
