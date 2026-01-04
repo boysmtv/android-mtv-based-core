@@ -8,6 +8,7 @@ import com.mtv.based.core.network.endpoint.ApiEndPoint
 import com.mtv.based.core.network.usecase.BaseUseCase
 import com.mtv.based.core.network.utils.NetworkRepository
 import com.mtv.based.core.network.utils.NetworkResponse
+import com.mtv.based.core.network.utils.RequestOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -18,8 +19,10 @@ class CreateUserUseCase @Inject constructor(
 
     override suspend fun execute(param: CreateUserRequest): NetworkResponse {
         return repository.post(
-            endpoint = ApiEndPoint.postUser,
-            body = param
+            endpoint = ApiEndPoint.CreateUser,
+            body = param,
+            options = RequestOptions(requireAuth = false)
         )
     }
+
 }

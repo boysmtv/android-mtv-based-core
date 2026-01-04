@@ -9,13 +9,24 @@ import com.mtv.based.core.network.utils.NetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
+//class GetUsersUseCase @Inject constructor(
+//    private val repository: NetworkRepository,
+//    @IoDispatcher dispatcher: CoroutineDispatcher
+//) : BaseUseCase<Unit, NameResponse>(dispatcher, NameResponse::class) {
+//
+//    override suspend fun execute(param: Unit): NetworkResponse {
+//        return repository.get(ApiEndPoint.getUser)
+//    }
+//
+//}
+
 class GetUsersUseCase @Inject constructor(
     private val repository: NetworkRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : BaseUseCase<Unit, NameResponse>(dispatcher, NameResponse::class) {
 
     override suspend fun execute(param: Unit): NetworkResponse {
-        return repository.get(ApiEndPoint.getUser)
+        return repository.get(ApiEndPoint.GetUsers)
     }
 
 }

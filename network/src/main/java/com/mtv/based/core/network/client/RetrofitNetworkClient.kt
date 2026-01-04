@@ -1,6 +1,5 @@
-package com.mtv.based.core.network.retrofit
+package com.mtv.based.core.network.client
 
-import com.mtv.based.core.network.utils.NetworkClientInterface
 import com.mtv.based.core.network.utils.NetworkConfigProvider
 import com.mtv.based.core.network.utils.NetworkResponse
 import retrofit2.HttpException
@@ -18,15 +17,13 @@ class RetrofitNetworkClient @Inject constructor(
         query: Map<String, String>,
         headers: Map<String, String>
     ): NetworkResponse {
-        val response = apiService.getData(
+        val response = apiService.get(
             "${baseUrl}$endpoint",
             query,
             headers
         )
 
-        if (!response.isSuccessful) {
-            throw HttpException(response)
-        }
+        if (!response.isSuccessful) throw HttpException(response)
 
         return NetworkResponse(
             body = response.body().orEmpty(),
@@ -39,19 +36,53 @@ class RetrofitNetworkClient @Inject constructor(
         body: Any,
         headers: Map<String, String>
     ): NetworkResponse {
-        val response = apiService.postData(
+        val response = apiService.post(
             "${baseUrl}$endpoint",
             body,
             headers
         )
 
-        if (!response.isSuccessful) {
-            throw HttpException(response)
-        }
+        if (!response.isSuccessful) throw HttpException(response)
 
         return NetworkResponse(
             body = response.body().orEmpty(),
             httpCode = response.code()
+        )
+    }
+
+    override suspend fun put(
+        endpoint: String,
+        body: Any,
+        headers: Map<String, String>
+    ): NetworkResponse {
+        val response = apiService.put(
+            "$baseUrl$endpoint",
+            body,
+            headers
+        )
+
+        if (!response.isSuccessful) throw HttpException(response)
+
+        return NetworkResponse(
+            response.body().orEmpty(),
+            response.code()
+        )
+    }
+
+    override suspend fun delete(
+        endpoint: String,
+        headers: Map<String, String>
+    ): NetworkResponse {
+        val response = apiService.delete(
+            "$baseUrl$endpoint",
+            headers
+        )
+
+        if (!response.isSuccessful) throw HttpException(response)
+
+        return NetworkResponse(
+            response.body().orEmpty(),
+            response.code()
         )
     }
 }
