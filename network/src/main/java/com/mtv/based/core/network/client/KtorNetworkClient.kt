@@ -1,7 +1,7 @@
 package com.mtv.based.core.network.client
 
 import com.mtv.based.core.network.utils.NetworkConfigProvider
-import com.mtv.based.core.network.utils.NetworkResponse
+import com.mtv.based.core.network.model.NetworkResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get

@@ -1,9 +1,12 @@
-package com.mtv.based.core.network.utils
+package com.mtv.based.core.network.repository
 
 import com.mtv.based.core.network.client.NetworkClientInterface
 import com.mtv.based.core.network.client.NetworkClientSelector
 import com.mtv.based.core.network.endpoint.ApiEndPoint
 import com.mtv.based.core.network.header.HeaderMerger
+import com.mtv.based.core.network.model.NetworkResponse
+import com.mtv.based.core.network.model.RequestOptions
+import com.mtv.based.core.network.utils.HttpMethod
 import javax.inject.Inject
 
 class NetworkRepository @Inject constructor(
@@ -19,17 +22,13 @@ class NetworkRepository @Inject constructor(
         options: RequestOptions = RequestOptions()
     ): NetworkResponse {
 
-        val finalOptions = options.copy(
-            requireAuth = endpoint.requireAuth
-        )
-
-        val headers = headerMerger.build(finalOptions)
+        val headers = headerMerger.build()
 
         return when (endpoint.method) {
 
             HttpMethod.Get -> client.get(
                 endpoint = endpoint.path,
-                query = finalOptions.query,
+                query = options.query,
                 headers = headers
             )
 

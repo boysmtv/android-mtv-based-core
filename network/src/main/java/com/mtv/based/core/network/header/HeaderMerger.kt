@@ -7,8 +7,6 @@
 
 package com.mtv.based.core.network.header
 
-import com.mtv.based.core.network.utils.BaseHeaderProvider
-import com.mtv.based.core.network.utils.RequestOptions
 import javax.inject.Inject
 
 class HeaderMerger @Inject constructor(
@@ -16,11 +14,9 @@ class HeaderMerger @Inject constructor(
     private val additionalHeaderProvider: AdditionalHeaderProvider
 ) {
 
-    fun build(options: RequestOptions): Map<String, String> {
-        return buildMap {
+    fun build(): Map<String, String> =
+        buildMap {
             putAll(baseHeaderProvider.provide())
-            putAll(additionalHeaderProvider.provide(options.requireAuth))
-            putAll(options.headers)
+            putAll(additionalHeaderProvider.provide())
         }
-    }
 }

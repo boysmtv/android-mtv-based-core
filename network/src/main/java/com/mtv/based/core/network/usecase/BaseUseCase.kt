@@ -1,7 +1,7 @@
 package com.mtv.based.core.network.usecase
 
 import com.mtv.based.core.network.model.BaseResponse
-import com.mtv.based.core.network.utils.NetworkResponse
+import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
 import com.mtv.based.core.network.utils.toUiError

@@ -4,11 +4,11 @@ package com.mtv.based.core.usecase
 import com.mtv.based.core.NameResponse
 import com.mtv.based.core.model.CreateUserRequest
 import com.mtv.based.core.network.di.IoDispatcher
-import com.mtv.based.core.network.endpoint.ApiEndPoint
+import com.mtv.based.core.endpoint.ApiEndPoint
 import com.mtv.based.core.network.usecase.BaseUseCase
-import com.mtv.based.core.network.utils.NetworkRepository
-import com.mtv.based.core.network.utils.NetworkResponse
-import com.mtv.based.core.network.utils.RequestOptions
+import com.mtv.based.core.network.repository.NetworkRepository
+import com.mtv.based.core.network.model.NetworkResponse
+import com.mtv.based.core.network.model.RequestOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -18,10 +18,9 @@ class CreateUserUseCase @Inject constructor(
 ) : BaseUseCase<CreateUserRequest, NameResponse>(dispatcher, NameResponse::class) {
 
     override suspend fun execute(param: CreateUserRequest): NetworkResponse {
-        return repository.post(
+        return repository.request(
             endpoint = ApiEndPoint.CreateUser,
-            body = param,
-            options = RequestOptions(requireAuth = false)
+            body = param
         )
     }
 

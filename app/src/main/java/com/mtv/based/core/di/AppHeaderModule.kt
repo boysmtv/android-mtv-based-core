@@ -7,10 +7,10 @@
 
 package com.mtv.based.core.di
 
-import com.mtv.based.core.config.AppAdditionalHeaderProviderImpl
-import com.mtv.based.core.network.header.AppAdditionalHeaderProvider
-import dagger.Binds
+import com.mtv.based.core.config.AppAdditionalHeaderProvider
+import com.mtv.based.core.network.header.AdditionalHeaderProvider
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
@@ -18,8 +18,9 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class AppHeaderModule {
 
-    @Binds
-    abstract fun bindAdditionalHeaderProvider(
-        impl: AppAdditionalHeaderProviderImpl
-    ): AppAdditionalHeaderProvider
+    @Provides
+    fun provideAdditionalHeaderProvider(): AdditionalHeaderProvider =
+        AppAdditionalHeaderProvider()
+
+
 }

@@ -11,4 +11,5 @@ sealed interface Resource<out T> {
     data class Error(
         val error: UiError
     ) : Resource<Nothing>
+
 }

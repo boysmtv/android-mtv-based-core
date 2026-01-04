@@ -8,10 +8,10 @@
 package com.mtv.based.core.usecase
 
 import com.mtv.based.core.network.di.IoDispatcher
-import com.mtv.based.core.network.endpoint.ApiEndPoint
+import com.mtv.based.core.endpoint.ApiEndPoint
 import com.mtv.based.core.network.usecase.BaseUseCase
-import com.mtv.based.core.network.utils.NetworkRepository
-import com.mtv.based.core.network.utils.NetworkResponse
+import com.mtv.based.core.network.repository.NetworkRepository
+import com.mtv.based.core.network.model.NetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

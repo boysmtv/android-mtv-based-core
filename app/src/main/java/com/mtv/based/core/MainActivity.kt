@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
 
                 Button(
                     onClick = {
-                        viewModel.createUser(
+                        viewModel.doLogin(
                             name = "Boy Santoso",
                             email = "boy@example.com",
                             age = 25

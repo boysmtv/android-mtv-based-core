@@ -1,4 +1,4 @@
-package com.mtv.based.core.network.utils
+package com.mtv.based.core.network.model
 
 data class NetworkResponse(
     val body: String,

@@ -1,6 +1,6 @@
 package com.mtv.based.core.network.client
 
-import com.mtv.based.core.network.utils.NetworkResponse
+import com.mtv.based.core.network.model.NetworkResponse
 
 interface NetworkClientInterface {
 

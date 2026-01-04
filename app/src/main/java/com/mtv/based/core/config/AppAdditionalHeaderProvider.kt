@@ -8,12 +8,10 @@
 package com.mtv.based.core.config
 
 import com.mtv.based.core.network.header.AdditionalHeaderProvider
-import javax.inject.Inject
 
-class AppAdditionalHeaderProvider @Inject constructor() :
-    AdditionalHeaderProvider {
+class AppAdditionalHeaderProvider : AdditionalHeaderProvider {
 
-    override fun provide(requireAuth: Boolean): Map<String, String> =
+    override fun provide(): Map<String, String> =
         mapOf(
             "X-App-Version" to "1.0.0",
             "X-Platform" to "android"
