@@ -1,6 +1,6 @@
 /*
  * Project: M2U ID
- * File: NetworkConfigModule.kt
+ * File: AppNetworkConfigModule.kt
  *
  * Created by PT. Maybank Indonesia Tbk,
  * Copyright © 2025, https://www.maybank.co.id/corporateinformation.

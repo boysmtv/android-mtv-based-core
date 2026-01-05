@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlinx.serialization)
@@ -23,7 +22,7 @@ android {
     buildTypes {
         release {
             buildConfigField("String", "BASE_URL", "\"https://api.prod.com/\"")
-            buildConfigField("Boolean", "USE_KTOR", "true")
+            buildConfigField("Boolean", "USE_KTOR", "false")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -31,7 +30,7 @@ android {
             )
         }
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://192.168.0.50:8080/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.68.123:8080/\"")
             buildConfigField("Boolean", "USE_KTOR", "false")
         }
     }
@@ -49,6 +48,9 @@ android {
         buildConfig = true
         compose = true
         viewBinding = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 }
 dependencies {

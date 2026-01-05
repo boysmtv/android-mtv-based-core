@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.signing)
     alias(libs.plugins.hilt.android)
@@ -11,9 +10,7 @@ plugins {
 
 android {
     namespace = "com.mtv.based.core.network"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -73,7 +70,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.play.services.cast.framework)
     kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
 
     // AndroidX Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,14 +77,6 @@ dependencies {
 
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
-
-    // Compose BOM
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
 
     // Testing
     testImplementation(libs.junit)

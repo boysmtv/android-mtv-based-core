@@ -7,16 +7,22 @@
 
 package com.mtv.based.core.network.header
 
+import java.util.Optional
 import javax.inject.Inject
 
 class HeaderMerger @Inject constructor(
-    private val baseHeaderProvider: BaseHeaderProvider,
-    private val additionalHeaderProvider: AdditionalHeaderProvider
+    private val base: BaseHeaderProvider,
+    private val additional: Optional<AdditionalHeaderProvider>
 ) {
 
-    fun build(): Map<String, String> =
-        buildMap {
-            putAll(baseHeaderProvider.provide())
-            putAll(additionalHeaderProvider.provide())
+    fun build(): Map<String, String> {
+        val headers = mutableMapOf<String, String>()
+        headers.putAll(base.provide())
+
+        additional.ifPresent {
+            headers.putAll(it.provide())
         }
+
+        return headers
+    }
 }

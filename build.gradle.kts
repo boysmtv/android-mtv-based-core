@@ -2,10 +2,9 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
-    alias(libs.plugins.kotlinx.serialization) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.signing)
     alias(libs.plugins.android.library) apply false
@@ -15,6 +14,16 @@ val signingKeyFile: String? by project
 val signingPassword: String? by project
 
 subprojects {
+
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.kotlin") {
+                useVersion("1.9.24")
+                because("Force Kotlin 1.9.24 to avoid metadata 2.x crash with KAPT")
+            }
+        }
+    }
+
     afterEvaluate {
         if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("java-library")) {
 

@@ -2,7 +2,7 @@ package com.mtv.based.core.network.repository
 
 import com.mtv.based.core.network.client.NetworkClientInterface
 import com.mtv.based.core.network.client.NetworkClientSelector
-import com.mtv.based.core.network.endpoint.ApiEndPoint
+import com.mtv.based.core.network.endpoint.IApiEndPoint
 import com.mtv.based.core.network.header.HeaderMerger
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.model.RequestOptions
@@ -17,7 +17,7 @@ class NetworkRepository @Inject constructor(
     private val client: NetworkClientInterface = selector.get()
 
     suspend fun request(
-        endpoint: ApiEndPoint,
+        endpoint: IApiEndPoint,
         body: Any? = null,
         options: RequestOptions = RequestOptions()
     ): NetworkResponse {
@@ -50,4 +50,5 @@ class NetworkRepository @Inject constructor(
             )
         }
     }
+
 }

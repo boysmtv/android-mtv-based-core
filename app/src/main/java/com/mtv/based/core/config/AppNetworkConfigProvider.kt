@@ -8,6 +8,7 @@ class AppNetworkConfigProvider : NetworkConfigProvider {
     override fun provide(): NetworkConfig =
         AppNetworkConfig(
             baseUrl = BuildConfig.BASE_URL,
-            useKtor = BuildConfig.USE_KTOR
+            useKtor = BuildConfig.USE_KTOR,
+            isDebug = BuildConfig.DEBUG
         )
 }
