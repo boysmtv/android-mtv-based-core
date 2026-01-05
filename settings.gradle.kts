@@ -29,7 +29,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "android-mtv-based-core"
+rootProject.name = "App Core"
 include(":app")
 include(":network")
 include(":provider")

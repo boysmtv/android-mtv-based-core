@@ -1,6 +1,6 @@
 package com.mtv.based.core.network.client
 
-import com.mtv.based.core.network.utils.NetworkConfigProvider
+import com.mtv.based.core.network.config.NetworkConfigProvider
 import com.mtv.based.core.network.model.NetworkResponse
 import retrofit2.HttpException
 import javax.inject.Inject

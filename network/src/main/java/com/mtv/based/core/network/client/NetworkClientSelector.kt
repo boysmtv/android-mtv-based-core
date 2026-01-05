@@ -2,7 +2,7 @@ package com.mtv.based.core.network.client
 
 import com.mtv.based.core.network.di.KtorClient
 import com.mtv.based.core.network.di.RetrofitClient
-import com.mtv.based.core.network.utils.NetworkConfigProvider
+import com.mtv.based.core.network.config.NetworkConfigProvider
 import javax.inject.Inject
 
 class NetworkClientSelector @Inject constructor(

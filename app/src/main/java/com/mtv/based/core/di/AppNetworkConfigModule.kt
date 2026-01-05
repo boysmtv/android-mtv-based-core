@@ -11,8 +11,8 @@
 package com.mtv.based.core.di
 
 import com.mtv.based.core.config.AppNetworkConfigProvider
-import com.mtv.based.core.network.utils.NetworkConfig
-import com.mtv.based.core.network.utils.NetworkConfigProvider
+import com.mtv.based.core.network.config.NetworkConfig
+import com.mtv.based.core.network.config.NetworkConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

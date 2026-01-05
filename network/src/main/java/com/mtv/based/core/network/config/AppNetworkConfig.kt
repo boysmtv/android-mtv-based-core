@@ -1,6 +1,4 @@
-package com.mtv.based.core.config
-
-import com.mtv.based.core.network.utils.NetworkConfig
+package com.mtv.based.core.network.config
 
 class AppNetworkConfig(
     override val baseUrl: String,

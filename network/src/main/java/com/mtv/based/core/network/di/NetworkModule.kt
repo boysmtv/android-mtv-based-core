@@ -7,7 +7,7 @@ import com.mtv.based.core.network.client.KtorNetworkClient
 import com.mtv.based.core.network.client.RetrofitApi
 import com.mtv.based.core.network.client.RetrofitNetworkClient
 import com.mtv.based.core.network.client.NetworkClientInterface
-import com.mtv.based.core.network.utils.NetworkConfigProvider
+import com.mtv.based.core.network.config.NetworkConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
