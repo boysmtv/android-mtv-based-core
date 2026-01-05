@@ -4,8 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
-//    alias(libs.plugins.kotlinx.serialization) apply false
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.24" apply false
+    alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.signing)
     alias(libs.plugins.android.library) apply false
