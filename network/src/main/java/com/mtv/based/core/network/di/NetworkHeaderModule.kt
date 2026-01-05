@@ -6,24 +6,23 @@
  */
 
 package com.mtv.based.core.network.di
-import com.mtv.based.core.network.header.AdditionalHeaderProvider
+
 import com.mtv.based.core.network.header.BaseHeaderProvider
 import com.mtv.based.core.network.header.DefaultBaseHeaderProvider
-import com.mtv.based.core.network.header.EmptyAdditionalHeaderProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkHeaderModule {
 
     @Provides
+    @Singleton
     fun provideBaseHeaderProvider(): BaseHeaderProvider =
         DefaultBaseHeaderProvider()
 
-    @Provides
-    fun provideAdditionalHeaderProvider(): AdditionalHeaderProvider =
-        EmptyAdditionalHeaderProvider()
 }
+

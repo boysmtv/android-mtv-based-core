@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mtv.based.core.model.LoginRequest
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogCenterV1
 import com.mtv.based.uicomponent.core.component.loading.LoadingV2
@@ -35,8 +36,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val viewModel: NetworkViewModel = hiltViewModel()
-            val userState by viewModel.users.collectAsState()
-            val postState by viewModel.createUserResponse.collectAsState()
+            val userState by viewModel.getUser.collectAsState()
+            val postState by viewModel.createUser.collectAsState()
+            val postLogin by viewModel.postLogin.collectAsState()
             val baseUiState by viewModel.baseUiState.collectAsState()
 
             LaunchedEffect(Unit) { viewModel.fetchUsers() }
@@ -95,9 +97,10 @@ class MainActivity : ComponentActivity() {
                 Button(
                     onClick = {
                         viewModel.doLogin(
-                            name = "Boy Santoso",
-                            email = "boy@example.com",
-                            age = 25
+                            LoginRequest(
+                                username = "Boys",
+                                password = "Mtv",
+                            )
                         )
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -124,6 +127,25 @@ class MainActivity : ComponentActivity() {
                                     Text("${c.country_id} : ${c.probability}")
                                 }
                             }
+                        }
+                    }
+
+                    else -> {}
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                when (val postResult = postLogin) {
+                    is Resource.Success -> {
+                        val user = postResult.data
+                        Column(modifier = Modifier.padding(8.dp)) {
+                            Text(
+                                "Login Successfully",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text("First Namee: ${user.firstname}")
+                            Text("Last Name: ${user.lastname}")
                         }
                     }
 

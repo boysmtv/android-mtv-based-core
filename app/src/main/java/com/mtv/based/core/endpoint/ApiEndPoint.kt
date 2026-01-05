@@ -1,34 +1,34 @@
 package com.mtv.based.core.endpoint
 
+import com.mtv.based.core.model.LoginRequest
+import com.mtv.based.core.network.endpoint.IApiEndPoint
 import com.mtv.based.core.network.utils.HttpMethod
 
-sealed class ApiEndPoint(
-    val path: String,
-    val method: HttpMethod,
-) {
+class ApiEndPoint {
 
-    object GetUsers : ApiEndPoint(
-        path = "api/name",
-        method = HttpMethod.Get
-    )
+    object GetUsers : IApiEndPoint {
+        override val path = "api/name"
+        override val method = HttpMethod.Get
+    }
 
-    object CreateUser : ApiEndPoint(
-        path = "user/create",
-        method = HttpMethod.Post,
-    )
+    object AuthLogin : IApiEndPoint {
+        override val path = "auth/login"
+        override val method = HttpMethod.Post
+    }
 
-    data class UpdateUser(
-        val id: String
-    ) : ApiEndPoint(
-        path = "users/$id",
-        method = HttpMethod.Put
-    )
+    object CreateUser : IApiEndPoint {
+        override val path = "user/create"
+        override val method = HttpMethod.Post
+    }
 
-    data class DeleteUser(
-        val id: String
-    ) : ApiEndPoint(
-        path = "users/$id",
-        method = HttpMethod.Delete
-    )
+    class UpdateUser(id: String) : IApiEndPoint {
+        override val path = "users/$id"
+        override val method = HttpMethod.Put
+    }
+
+    class DeleteUser(id: String) : IApiEndPoint {
+        override val path = "users/$id"
+        override val method = HttpMethod.Delete
+    }
 
 }

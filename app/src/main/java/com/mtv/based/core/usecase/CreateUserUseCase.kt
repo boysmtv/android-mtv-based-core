@@ -8,7 +8,6 @@ import com.mtv.based.core.endpoint.ApiEndPoint
 import com.mtv.based.core.network.usecase.BaseUseCase
 import com.mtv.based.core.network.repository.NetworkRepository
 import com.mtv.based.core.network.model.NetworkResponse
-import com.mtv.based.core.network.model.RequestOptions
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

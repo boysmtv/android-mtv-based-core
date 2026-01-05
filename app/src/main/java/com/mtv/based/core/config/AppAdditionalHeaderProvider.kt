@@ -16,4 +16,5 @@ class AppAdditionalHeaderProvider : AdditionalHeaderProvider {
             "X-App-Version" to "1.0.0",
             "X-Platform" to "android"
         )
+
 }

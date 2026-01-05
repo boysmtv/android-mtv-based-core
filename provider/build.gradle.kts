@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.signing)
     alias(libs.plugins.hilt.android)
@@ -11,9 +10,7 @@ plugins {
 
 android {
     namespace = "com.mtv.based.core.provider"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
