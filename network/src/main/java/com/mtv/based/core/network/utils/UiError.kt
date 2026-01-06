@@ -3,30 +3,27 @@ package com.mtv.based.core.network.utils
 sealed interface UiError {
     val message: String
 
-    data object Unauthorized : UiError {
-        override val message = "Sesi anda telah berakhir"
-    }
-
-    data object Forbidden : UiError {
-        override val message = "Akses ditolak"
-    }
-
-    data object Server : UiError {
-        override val message = "Server sedang bermasalah"
-    }
+    data class Validation(
+        override val message: String
+    ) : UiError
 
     data class Network(
-        val error: String
-    ) : UiError {
-        override val message: String = error.ifBlank { "Periksa koneksi internet" }
-    }
+        override val message: String = ErrorMessages.NETWORK_ERROR
+    ) : UiError
 
-    data class IO(
-        override val message: String
+    data class Unauthorized(
+        override val message: String = ErrorMessages.SESSION_EXPIRED
+    ) : UiError
+
+    data class Forbidden(
+        override val message: String = ErrorMessages.ACCESS_DENIED
+    ) : UiError
+
+    data class Server(
+        override val message: String = ErrorMessages.SERVER_ERROR
     ) : UiError
 
     data class Unknown(
-        override val message: String
+        override val message: String = ErrorMessages.GENERIC_ERROR
     ) : UiError
-
 }

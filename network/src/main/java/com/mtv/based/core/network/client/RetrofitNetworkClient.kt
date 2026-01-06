@@ -2,7 +2,6 @@ package com.mtv.based.core.network.client
 
 import com.mtv.based.core.network.config.NetworkConfigProvider
 import com.mtv.based.core.network.model.NetworkResponse
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class RetrofitNetworkClient @Inject constructor(
@@ -23,10 +22,14 @@ class RetrofitNetworkClient @Inject constructor(
             headers
         )
 
-        if (!response.isSuccessful) throw HttpException(response)
+        val rawBody = if (response.isSuccessful) {
+            response.body().orEmpty()
+        } else {
+            response.errorBody()?.string().orEmpty()
+        }
 
         return NetworkResponse(
-            body = response.body().orEmpty(),
+            body = rawBody,
             httpCode = response.code()
         )
     }
@@ -42,10 +45,14 @@ class RetrofitNetworkClient @Inject constructor(
             headers
         )
 
-        if (!response.isSuccessful) throw HttpException(response)
+        val rawBody = if (response.isSuccessful) {
+            response.body().orEmpty()
+        } else {
+            response.errorBody()?.string().orEmpty()
+        }
 
         return NetworkResponse(
-            body = response.body().orEmpty(),
+            body = rawBody,
             httpCode = response.code()
         )
     }
@@ -61,11 +68,15 @@ class RetrofitNetworkClient @Inject constructor(
             headers
         )
 
-        if (!response.isSuccessful) throw HttpException(response)
+        val rawBody = if (response.isSuccessful) {
+            response.body().orEmpty()
+        } else {
+            response.errorBody()?.string().orEmpty()
+        }
 
         return NetworkResponse(
-            response.body().orEmpty(),
-            response.code()
+            body = rawBody,
+            httpCode = response.code()
         )
     }
 
@@ -78,11 +89,15 @@ class RetrofitNetworkClient @Inject constructor(
             headers
         )
 
-        if (!response.isSuccessful) throw HttpException(response)
+        val rawBody = if (response.isSuccessful) {
+            response.body().orEmpty()
+        } else {
+            response.errorBody()?.string().orEmpty()
+        }
 
         return NetworkResponse(
-            response.body().orEmpty(),
-            response.code()
+            body = rawBody,
+            httpCode = response.code()
         )
     }
 }
