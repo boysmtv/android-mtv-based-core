@@ -1,6 +1,7 @@
 package com.mtv.based.core
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -20,9 +21,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mtv.based.core.model.LoginRequest
+import com.mtv.based.core.network.firebase.result.FirebaseResult
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogCenterV1
 import com.mtv.based.uicomponent.core.component.loading.LoadingV2
@@ -39,6 +42,7 @@ class MainActivity : ComponentActivity() {
             val userState by viewModel.getUser.collectAsState()
             val postState by viewModel.createUser.collectAsState()
             val postLogin by viewModel.postLogin.collectAsState()
+            val saveUserFirebase by viewModel.saveUserFirebase.collectAsState()
             val baseUiState by viewModel.baseUiState.collectAsState()
 
             LaunchedEffect(Unit) { viewModel.fetchUsers() }
@@ -48,6 +52,8 @@ class MainActivity : ComponentActivity() {
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
+
+//                viewModel.saveUser("1", "Boys", "Boys.mtv@gmail.com")
 
                 Text(
                     "User Info",
@@ -64,6 +70,18 @@ class MainActivity : ComponentActivity() {
                         current.data.country.forEach { country ->
                             Text("${country.country_id} : ${country.probability}")
                         }
+                    }
+
+                    else -> {}
+                }
+
+                when (val current = saveUserFirebase) {
+                    is FirebaseResult.Success -> {
+                        Toast.makeText(
+                            LocalContext.current,
+                            "Success Post to Firebase - ${current.data}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
 
                     else -> {}

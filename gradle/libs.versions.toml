@@ -23,6 +23,9 @@ material = "1.13.0"
 gson = "2.10.1"
 chucker = "4.0.0"
 playServicesCastFramework = "21.4.0"
+firebaseFirestoreKtx = "26.0.2"
+google-services = "4.4.0"
+firebase-bom = "32.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +75,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 play-services-cast-framework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playServicesCastFramework" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -83,3 +89,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 maven-publish = { id = "maven-publish" }
 signing = { id = "signing" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
