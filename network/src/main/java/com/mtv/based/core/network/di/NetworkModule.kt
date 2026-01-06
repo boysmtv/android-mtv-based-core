@@ -45,7 +45,7 @@ object NetworkModule {
         provider: NetworkConfigProvider
     ): HttpClient =
         HttpClient(CIO) {
-
+            expectSuccess = false
             install(ContentNegotiation) {
                 json()
             }

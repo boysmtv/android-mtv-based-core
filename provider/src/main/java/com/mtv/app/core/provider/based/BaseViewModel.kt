@@ -2,6 +2,7 @@ package com.mtv.app.core.provider.based
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
 import com.mtv.based.uicomponent.core.component.dialog.dialogv1.ErrorDialogStateV1
@@ -35,9 +36,10 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun showError(error: UiError) {
-        val message = error.message.takeIf { it.isNotBlank() }
-            ?: "Terjadi kesalahan"
+    private fun showError(error: UiError) {
+        val message = error.message
+            .takeIf { it.isNotBlank() }
+            ?: ErrorMessages.GENERIC_ERROR
 
         _baseUiState.update {
             it.copy(
