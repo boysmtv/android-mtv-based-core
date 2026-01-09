@@ -6,10 +6,12 @@ import com.mtv.based.core.network.config.NetworkConfig
 import com.mtv.based.core.network.config.NetworkConfigProvider
 
 class AppNetworkConfigProvider : NetworkConfigProvider {
+
     override fun provide(): NetworkConfig =
         AppNetworkConfig(
             baseUrl = BuildConfig.BASE_URL,
             useKtor = BuildConfig.USE_KTOR,
             isDebug = BuildConfig.DEBUG
         )
+
 }

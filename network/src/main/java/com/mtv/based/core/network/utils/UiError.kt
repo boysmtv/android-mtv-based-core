@@ -1,5 +1,9 @@
 package com.mtv.based.core.network.utils
 
+import com.google.firebase.FirebaseException
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.mtv.based.core.network.firebase.utils.FirebaseUiError
+
 sealed interface UiError {
     val message: String
 
@@ -27,3 +31,39 @@ sealed interface UiError {
         override val message: String = ErrorMessages.GENERIC_ERROR
     ) : UiError
 }
+
+fun Throwable.toFirebaseUiError(): FirebaseUiError =
+    when (this) {
+
+        is FirebaseFirestoreException -> when (code) {
+            FirebaseFirestoreException.Code.PERMISSION_DENIED ->
+                FirebaseUiError.Permission(
+                    message ?: ErrorMessages.PERMISSION_DENIED
+                )
+
+            FirebaseFirestoreException.Code.NOT_FOUND ->
+                FirebaseUiError.NotFound(
+                    message ?: ErrorMessages.NOT_FOUND
+                )
+
+            FirebaseFirestoreException.Code.UNAVAILABLE ->
+                FirebaseUiError.Network(
+                    message ?: ErrorMessages.NETWORK_ERROR
+                )
+
+            else ->
+                FirebaseUiError.Unknown(
+                    message ?: ErrorMessages.GENERIC_ERROR
+                )
+        }
+
+        is FirebaseException ->
+            FirebaseUiError.Network(
+                message ?: ErrorMessages.NETWORK_ERROR
+            )
+
+        else ->
+            FirebaseUiError.Unknown(
+                message ?: ErrorMessages.GENERIC_ERROR
+            )
+    }

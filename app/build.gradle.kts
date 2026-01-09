@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -30,8 +31,13 @@ android {
             )
         }
         debug {
+            // Network
             buildConfigField("String", "BASE_URL", "\"http://192.168.68.123:8080/\"")
             buildConfigField("Boolean", "USE_KTOR", "false")
+
+            // Firebase
+            buildConfigField("String", "FIREBASE_PROJECT_ID", "\"app-movie-e85f3\"")
+            buildConfigField("String", "FIREBASE_DEFAULT_CONNECTION", "\"users\"")
         }
     }
 
@@ -82,6 +88,13 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
 
     // Hilt
     implementation(libs.hilt.android)

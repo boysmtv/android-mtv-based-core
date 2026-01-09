@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "280877471328",
+    "project_id": "app-movie-e85f3",
+    "storage_bucket": "app-movie-e85f3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280877471328:android:190dbf84046f62dd7c5505",
+        "android_client_info": {
+          "package_name": "com.mtv.app.movie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoQjXVEHSfGfhf4GqJ8wPCAbppHaUvaQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280877471328:android:0e4cd53c042e81497c5505",
+        "android_client_info": {
+          "package_name": "com.mtv.based.core"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoQjXVEHSfGfhf4GqJ8wPCAbppHaUvaQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

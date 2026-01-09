@@ -2,6 +2,8 @@ package com.mtv.app.core.provider.based
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mtv.based.core.network.firebase.result.FirebaseResult
+import com.mtv.based.core.network.firebase.utils.FirebaseUiError
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
@@ -17,6 +19,9 @@ abstract class BaseViewModel : ViewModel() {
     protected val _baseUiState = MutableStateFlow(BaseUiState())
     val baseUiState: StateFlow<BaseUiState> = _baseUiState
 
+    /* ============================================================
+     * NETWORK USE CASE
+     * ============================================================ */
     protected fun <T> launchUseCase(
         target: MutableStateFlow<Resource<T>>,
         block: suspend () -> Flow<Resource<T>>
@@ -36,7 +41,43 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    protected fun <T> launchFirebaseUseCase(
+        target: MutableStateFlow<FirebaseResult<T>>,
+        block: suspend () -> Flow<FirebaseResult<T>>
+    ) {
+        viewModelScope.launch {
+            block().collect { result ->
+                target.value = result
+
+                _baseUiState.update {
+                    it.copy(isLoading = result is FirebaseResult.Loading)
+                }
+
+                if (result is FirebaseResult.Error) {
+                    showFirebaseError(result.error)
+                }
+            }
+        }
+    }
+
+    /* ============================================================
+     * ERROR HANDLER
+     * ============================================================ */
     private fun showError(error: UiError) {
+        val message = error.message
+            .takeIf { it.isNotBlank() }
+            ?: ErrorMessages.GENERIC_ERROR
+
+        _baseUiState.update {
+            it.copy(
+                errorDialog = ErrorDialogStateV1(
+                    message = message
+                )
+            )
+        }
+    }
+
+    private fun showFirebaseError(error: FirebaseUiError) {
         val message = error.message
             .takeIf { it.isNotBlank() }
             ?: ErrorMessages.GENERIC_ERROR
@@ -56,4 +97,3 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 }
-

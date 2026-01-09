@@ -7,6 +7,8 @@ object ErrorMessages {
     const val SESSION_EXPIRED = "Session has expired"
     const val ACCESS_DENIED = "Access denied"
     const val SERVER_ERROR = "System error occurred"
+    const val PERMISSION_DENIED = "Permission denied"
+    const val NOT_FOUND = "Data not found"
     const val NETWORK_ERROR = "Please check your internet connection"
 
 }
