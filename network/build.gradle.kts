@@ -67,8 +67,9 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
     // Hilt
     implementation(libs.hilt.android)

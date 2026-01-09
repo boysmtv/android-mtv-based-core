@@ -23,6 +23,11 @@ interface FirebaseDataSource {
         data: Map<String, Any>
     ): Flow<FirebaseResult<Unit>>
 
+    fun addDocument(
+        collection: String,
+        data: Map<String, Any>
+    ): Flow<FirebaseResult<String>>
+
     fun updateDocument(
         collection: String,
         documentId: String,
