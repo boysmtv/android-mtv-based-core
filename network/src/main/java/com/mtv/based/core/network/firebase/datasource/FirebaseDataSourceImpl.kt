@@ -79,6 +79,24 @@ class FirebaseDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun addDocument(
+        collection: String,
+        data: Map<String, Any>
+    ): Flow<FirebaseResult<String>> = flow {
+        emit(FirebaseResult.Loading)
+        try {
+            val documentRef = firestore
+                .collection(collection)
+                .add(data)
+                .await()
+
+            emit(FirebaseResult.Success(documentRef.id))
+        } catch (e: Exception) {
+            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+        }
+    }
+
+
     override fun updateDocument(
         collection: String,
         documentId: String,
