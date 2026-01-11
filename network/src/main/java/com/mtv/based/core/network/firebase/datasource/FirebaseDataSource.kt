@@ -12,6 +12,12 @@ interface FirebaseDataSource {
         mapper: (Map<String, Any>) -> T
     ): Flow<FirebaseResult<T>>
 
+    fun <T> getDocumentByFields(
+        collection: String,
+        data: Map<String, Any>,
+        mapper: (Map<String, Any>) -> T
+    ): Flow<FirebaseResult<T>>
+
     fun <T> getCollection(
         collection: String,
         mapper: (Map<String, Any>) -> T
