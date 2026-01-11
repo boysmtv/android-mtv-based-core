@@ -116,4 +116,22 @@ class FirebaseDataSourceImpl @Inject constructor(
         }
     }
 
+    override fun isExistByFields(
+        collection: String,
+        data: Map<String, Any>
+    ): Flow<Boolean> = flow {
+        for ((key, value) in data) {
+            val snapshot = firestore.collection(collection)
+                .whereEqualTo(key, value)
+                .get()
+                .await()
+
+            if (!snapshot.isEmpty) {
+                emit(true)
+                return@flow
+            }
+        }
+        emit(false)
+    }
+
 }
