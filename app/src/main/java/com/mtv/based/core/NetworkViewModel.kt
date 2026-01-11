@@ -19,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class NetworkViewModel @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase,
-    private val createUserUseCase: CreateUserUseCase,
     private val loginUseCase: LoginUseCase,
     private val getUserFirebaseUseCase: GetUserFirebaseUseCase,
     private val saveUserFirebaseUseCase: SaveUserFirebaseUseCase

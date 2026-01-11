@@ -33,4 +33,9 @@ interface FirebaseDataSource {
         documentId: String,
         data: Map<String, Any>
     ): Flow<FirebaseResult<Unit>>
+
+    fun isExistByFields(
+        collection: String,
+        data: Map<String, Any>
+    ): Flow<Boolean>
 }
