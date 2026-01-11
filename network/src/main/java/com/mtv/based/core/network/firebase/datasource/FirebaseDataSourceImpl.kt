@@ -1,8 +1,10 @@
 package com.mtv.based.core.network.firebase.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.mtv.based.core.network.firebase.config.FirebaseConfig
 import com.mtv.based.core.network.firebase.result.FirebaseResult
+import com.mtv.based.core.network.firebase.utils.FirebaseUiError
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.toFirebaseUiError
 import kotlinx.coroutines.flow.Flow
@@ -36,6 +38,35 @@ class FirebaseDataSourceImpl @Inject constructor(
         } catch (e: Exception) {
             emit(FirebaseResult.Error(e.toFirebaseUiError()))
         }
+    }
+
+    override fun <T> getDocumentByFields(
+        collection: String,
+        data: Map<String, Any>,
+        mapper: (Map<String, Any>) -> T
+    ): Flow<FirebaseResult<T>> = flow {
+
+        emit(FirebaseResult.Loading)
+
+        var query: Query = firestore.collection(collection)
+
+        // Build dynamic query
+        data.forEach { (key, value) ->
+            query = query.whereEqualTo(key, value)
+        }
+
+        val snapshot = query.get().await()
+
+        if (snapshot.isEmpty) {
+            emit(FirebaseResult.Error(
+                FirebaseUiError.NotFound(ErrorMessages.NOT_FOUND)
+            ))
+        } else {
+            val document = snapshot.documents.first()
+            val map = document.data ?: emptyMap()
+            emit(FirebaseResult.Success(mapper(map)))
+        }
+
     }
 
     override fun <T> getCollection(
