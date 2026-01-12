@@ -1,7 +1,7 @@
 package com.mtv.based.core.di
 
 import com.mtv.based.core.config.AppFirebaseConfigProvider
-import com.mtv.based.core.network.firebase.config.FirebaseConfigProvider
+import com.mtv.based.core.network.config.FirebaseConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

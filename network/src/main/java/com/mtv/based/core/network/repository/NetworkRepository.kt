@@ -1,7 +1,7 @@
 package com.mtv.based.core.network.repository
 
-import com.mtv.based.core.network.client.NetworkClientInterface
-import com.mtv.based.core.network.client.NetworkClientSelector
+import com.mtv.based.core.network.datasource.NetworkDataSource
+import com.mtv.based.core.network.datasource.NetworkClientSelector
 import com.mtv.based.core.network.endpoint.IApiEndPoint
 import com.mtv.based.core.network.header.HeaderMerger
 import com.mtv.based.core.network.model.NetworkResponse
@@ -14,7 +14,7 @@ class NetworkRepository @Inject constructor(
     private val headerMerger: HeaderMerger
 ) {
 
-    private val client: NetworkClientInterface = selector.get()
+    private val client: NetworkDataSource = selector.get()
 
     suspend fun request(
         endpoint: IApiEndPoint,

@@ -1,4 +1,4 @@
-package com.mtv.based.core.network.client
+package com.mtv.based.core.network.datasource
 
 import retrofit2.Response
 import retrofit2.http.Body
@@ -10,7 +10,7 @@ import retrofit2.http.PUT
 import retrofit2.http.QueryMap
 import retrofit2.http.Url
 
-interface RetrofitApi {
+interface RetrofitDataSource {
 
     @GET
     suspend fun get(

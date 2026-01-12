@@ -4,11 +4,11 @@ import com.mtv.based.core.datasource.checkFields
 import com.mtv.based.core.model.UserDto
 import com.mtv.based.core.model.mapper.toFirebaseMap
 import com.mtv.based.core.network.di.IoDispatcher
-import com.mtv.based.core.network.firebase.config.FirebaseConfig
-import com.mtv.based.core.network.firebase.datasource.FirebaseDataSource
-import com.mtv.based.core.network.firebase.result.FirebaseResult
-import com.mtv.based.core.network.firebase.usecase.BaseFirebaseUseCase
-import com.mtv.based.core.network.firebase.utils.FirebaseUiError
+import com.mtv.based.core.network.config.FirebaseConfig
+import com.mtv.based.core.network.datasource.FirebaseDataSource
+import com.mtv.based.core.network.utils.ResourceFirebase
+import com.mtv.app.core.provider.based.BaseFirebaseUseCase
+import com.mtv.based.core.network.utils.UiErrorFirebase
 import com.mtv.based.core.network.utils.ErrorMessages
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -22,8 +22,8 @@ class SaveUserFirebaseUseCase @Inject constructor(
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : BaseFirebaseUseCase<UserDto, Unit>(dispatcher) {
 
-    override fun execute(param: UserDto): Flow<FirebaseResult<Unit>> = flow {
-        emit(FirebaseResult.Loading)
+    override fun execute(param: UserDto): Flow<ResourceFirebase<Unit>> = flow {
+        emit(ResourceFirebase.Loading)
 
         val exists = dataSource.isExistByFields(
             collection = config.defaultCollection,
@@ -31,7 +31,7 @@ class SaveUserFirebaseUseCase @Inject constructor(
         ).first()
 
         if (exists) {
-            emit(FirebaseResult.Error(FirebaseUiError.Permission(ErrorMessages.USER_ALREADY_EXISTS)))
+            emit(ResourceFirebase.Error(UiErrorFirebase.Permission(ErrorMessages.USER_ALREADY_EXISTS)))
             return@flow
         }
 

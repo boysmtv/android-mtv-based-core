@@ -1,4 +1,4 @@
-package com.mtv.based.core.network.firebase.config
+package com.mtv.based.core.network.config
 
 interface FirebaseConfigProvider {
     fun provide(): FirebaseConfig

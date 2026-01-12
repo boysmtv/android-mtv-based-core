@@ -1,13 +1,11 @@
 package com.mtv.based.core
 
 import com.mtv.app.core.provider.based.BaseViewModel
-import com.mtv.based.core.model.CreateUserRequest
 import com.mtv.based.core.model.LoginRequest
 import com.mtv.based.core.model.LoginResponse
 import com.mtv.based.core.model.UserDto
-import com.mtv.based.core.network.firebase.result.FirebaseResult
+import com.mtv.based.core.network.utils.ResourceFirebase
 import com.mtv.based.core.network.utils.Resource
-import com.mtv.based.core.usecase.CreateUserUseCase
 import com.mtv.based.core.usecase.GetUserFirebaseUseCase
 import com.mtv.based.core.usecase.GetUsersUseCase
 import com.mtv.based.core.usecase.LoginUseCase
@@ -27,8 +25,8 @@ class NetworkViewModel @Inject constructor(
     val getUser = MutableStateFlow<Resource<NameResponse>>(Resource.Loading)
     val createUser = MutableStateFlow<Resource<NameResponse>>(Resource.Loading)
     val postLogin = MutableStateFlow<Resource<LoginResponse>>(Resource.Loading)
-    val userFirebase = MutableStateFlow<FirebaseResult<UserDto>>(FirebaseResult.Loading)
-    val saveUserFirebase = MutableStateFlow<FirebaseResult<Unit>>(FirebaseResult.Loading)
+    val userFirebase = MutableStateFlow<ResourceFirebase<UserDto>>(ResourceFirebase.Loading)
+    val saveUserFirebase = MutableStateFlow<ResourceFirebase<Unit>>(ResourceFirebase.Loading)
 
 
     fun fetchUsers() = launchUseCase(getUser) {

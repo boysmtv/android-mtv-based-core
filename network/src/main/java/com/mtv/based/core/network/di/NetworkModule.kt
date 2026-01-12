@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.mtv.based.core.network.client.KtorNetworkClient
-import com.mtv.based.core.network.client.RetrofitApi
+import com.mtv.based.core.network.datasource.RetrofitDataSource
 import com.mtv.based.core.network.client.RetrofitNetworkClient
-import com.mtv.based.core.network.client.NetworkClientInterface
+import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.config.NetworkConfigProvider
 import dagger.Module
 import dagger.Provides
@@ -90,8 +90,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitApi(retrofit: Retrofit): RetrofitApi =
-        retrofit.create(RetrofitApi::class.java)
+    fun provideRetrofitApi(retrofit: Retrofit): RetrofitDataSource =
+        retrofit.create(RetrofitDataSource::class.java)
 
     @Provides
     @Singleton
@@ -99,16 +99,16 @@ object NetworkModule {
     fun provideKtorNetworkClient(
         httpClient: HttpClient,
         config: NetworkConfigProvider
-    ): NetworkClientInterface =
+    ): NetworkDataSource =
         KtorNetworkClient(httpClient, config)
 
     @Provides
     @Singleton
     @RetrofitClient
     fun provideRetrofitNetworkClient(
-        apiService: RetrofitApi,
+        apiService: RetrofitDataSource,
         config: NetworkConfigProvider
-    ): NetworkClientInterface =
+    ): NetworkDataSource =
         RetrofitNetworkClient(apiService, config)
 
 }

@@ -1,6 +1,7 @@
 package com.mtv.based.core.network.client
 
 import com.mtv.based.core.network.config.NetworkConfigProvider
+import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.model.NetworkResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class KtorNetworkClient @Inject constructor(
     private val client: HttpClient,
     config: NetworkConfigProvider,
-) : NetworkClientInterface {
+) : NetworkDataSource {
 
     val baseUrl = config.provide().baseUrl
 

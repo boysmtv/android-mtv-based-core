@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mtv.based.core.model.LoginRequest
-import com.mtv.based.core.network.firebase.result.FirebaseResult
+import com.mtv.based.core.network.utils.ResourceFirebase
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogCenterV1
 import com.mtv.based.uicomponent.core.component.loading.LoadingV2
@@ -49,16 +49,16 @@ class MainActivity : ComponentActivity() {
 
             // --- Side Effects ---
             LaunchedEffect(userFirebase) {
-                if (userFirebase is FirebaseResult.Success) {
-                    val data = (userFirebase as FirebaseResult.Success).data
+                if (userFirebase is ResourceFirebase.Success) {
+                    val data = (userFirebase as ResourceFirebase.Success).data
                     Toast.makeText(context, "Success Fetch - $data", Toast.LENGTH_LONG).show()
                     Log.e("LOG-FIREBASE", "Success-Fetch: $data")
                 }
             }
 
             LaunchedEffect(saveUserFirebase) {
-                if (saveUserFirebase is FirebaseResult.Success) {
-                    val data = (saveUserFirebase as FirebaseResult.Success).data
+                if (saveUserFirebase is ResourceFirebase.Success) {
+                    val data = (saveUserFirebase as ResourceFirebase.Success).data
                     Toast.makeText(context, "Success Post to Firebase - $data", Toast.LENGTH_LONG).show()
                     Log.e("LOG-FIREBASE", "Success-Post: $data")
                     viewModel.fetchUserFirebase("1")

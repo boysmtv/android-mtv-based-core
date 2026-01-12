@@ -6,7 +6,7 @@ import com.mtv.based.core.model.LoginResponse
 import com.mtv.based.core.network.di.IoDispatcher
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.repository.NetworkRepository
-import com.mtv.based.core.network.usecase.BaseUseCase
+import com.mtv.app.core.provider.based.BaseUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 

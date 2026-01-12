@@ -1,5 +1,7 @@
 package com.mtv.based.core.network.utils
 
+import com.google.firebase.FirebaseException
+import com.google.firebase.firestore.FirebaseFirestoreException
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -20,4 +22,40 @@ fun Throwable.toUiError(): UiError =
 
         else ->
             UiError.Unknown(message ?: ErrorMessages.GENERIC_ERROR)
+    }
+
+fun Throwable.toFirebaseUiError(): UiErrorFirebase =
+    when (this) {
+
+        is FirebaseFirestoreException -> when (code) {
+            FirebaseFirestoreException.Code.PERMISSION_DENIED ->
+                UiErrorFirebase.Permission(
+                    message ?: ErrorMessages.PERMISSION_DENIED
+                )
+
+            FirebaseFirestoreException.Code.NOT_FOUND ->
+                UiErrorFirebase.NotFound(
+                    message ?: ErrorMessages.NOT_FOUND
+                )
+
+            FirebaseFirestoreException.Code.UNAVAILABLE ->
+                UiErrorFirebase.Network(
+                    message ?: ErrorMessages.NETWORK_ERROR
+                )
+
+            else ->
+                UiErrorFirebase.Unknown(
+                    message ?: ErrorMessages.GENERIC_ERROR
+                )
+        }
+
+        is FirebaseException ->
+            UiErrorFirebase.Network(
+                message ?: ErrorMessages.NETWORK_ERROR
+            )
+
+        else ->
+            UiErrorFirebase.Unknown(
+                message ?: ErrorMessages.GENERIC_ERROR
+            )
     }

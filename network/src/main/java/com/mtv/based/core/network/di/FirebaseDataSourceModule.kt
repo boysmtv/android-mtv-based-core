@@ -1,10 +1,9 @@
-package com.mtv.based.core.network.firebase.di
+package com.mtv.based.core.network.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.mtv.based.core.network.firebase.config.FirebaseConfig
-import com.mtv.based.core.network.firebase.datasource.FirebaseDataSource
-import com.mtv.based.core.network.firebase.datasource.FirebaseDataSourceImpl
-import dagger.Binds
+import com.mtv.based.core.network.config.FirebaseConfig
+import com.mtv.based.core.network.datasource.FirebaseDataSource
+import com.mtv.based.core.network.client.FirebaseNetworkClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +17,6 @@ object FirebaseDataSourceModule {
     fun provideFirebaseDataSource(
         firestore: FirebaseFirestore,
         config: FirebaseConfig
-    ): FirebaseDataSource = FirebaseDataSourceImpl(firestore, config)
+    ): FirebaseDataSource = FirebaseNetworkClient(firestore, config)
 
 }

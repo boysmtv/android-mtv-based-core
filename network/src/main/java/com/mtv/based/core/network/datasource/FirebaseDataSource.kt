@@ -1,7 +1,6 @@
-package com.mtv.based.core.network.firebase.datasource
+package com.mtv.based.core.network.datasource
 
-
-import com.mtv.based.core.network.firebase.result.FirebaseResult
+import com.mtv.based.core.network.utils.ResourceFirebase
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseDataSource {
@@ -10,35 +9,35 @@ interface FirebaseDataSource {
         collection: String,
         documentId: String,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<T>>
+    ): Flow<ResourceFirebase<T>>
 
     fun <T> getDocumentByFields(
         collection: String,
         data: Map<String, Any>,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<T>>
+    ): Flow<ResourceFirebase<T>>
 
     fun <T> getCollection(
         collection: String,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<List<T>>>
+    ): Flow<ResourceFirebase<List<T>>>
 
     fun setDocument(
         collection: String,
         documentId: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<Unit>>
+    ): Flow<ResourceFirebase<Unit>>
 
     fun addDocument(
         collection: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<String>>
+    ): Flow<ResourceFirebase<String>>
 
     fun updateDocument(
         collection: String,
         documentId: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<Unit>>
+    ): Flow<ResourceFirebase<Unit>>
 
     fun isExistByFields(
         collection: String,
