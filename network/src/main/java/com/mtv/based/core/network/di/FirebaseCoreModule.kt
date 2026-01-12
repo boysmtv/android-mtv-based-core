@@ -1,4 +1,4 @@
-package com.mtv.based.core.network.firebase.di
+package com.mtv.based.core.network.di
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore

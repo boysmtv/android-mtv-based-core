@@ -2,8 +2,8 @@ package com.mtv.app.core.provider.based
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mtv.based.core.network.firebase.result.FirebaseResult
-import com.mtv.based.core.network.firebase.utils.FirebaseUiError
+import com.mtv.based.core.network.utils.ResourceFirebase
+import com.mtv.based.core.network.utils.UiErrorFirebase
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
@@ -42,18 +42,18 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun <T> launchFirebaseUseCase(
-        target: MutableStateFlow<FirebaseResult<T>>,
-        block: suspend () -> Flow<FirebaseResult<T>>
+        target: MutableStateFlow<ResourceFirebase<T>>,
+        block: suspend () -> Flow<ResourceFirebase<T>>
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
 
                 _baseUiState.update {
-                    it.copy(isLoading = result is FirebaseResult.Loading)
+                    it.copy(isLoading = result is ResourceFirebase.Loading)
                 }
 
-                if (result is FirebaseResult.Error) {
+                if (result is ResourceFirebase.Error) {
                     showFirebaseError(result.error)
                 }
             }
@@ -77,7 +77,7 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    private fun showFirebaseError(error: FirebaseUiError) {
+    private fun showFirebaseError(error: UiErrorFirebase) {
         val message = error.message
             .takeIf { it.isNotBlank() }
             ?: ErrorMessages.GENERIC_ERROR

@@ -9,7 +9,7 @@ package com.mtv.based.core.usecase
 
 import com.mtv.based.core.network.di.IoDispatcher
 import com.mtv.based.core.endpoint.ApiEndPoint
-import com.mtv.based.core.network.usecase.BaseUseCase
+import com.mtv.app.core.provider.based.BaseUseCase
 import com.mtv.based.core.network.repository.NetworkRepository
 import com.mtv.based.core.network.model.NetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher

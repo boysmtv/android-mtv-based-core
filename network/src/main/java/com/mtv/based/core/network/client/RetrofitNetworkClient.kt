@@ -1,13 +1,15 @@
 package com.mtv.based.core.network.client
 
 import com.mtv.based.core.network.config.NetworkConfigProvider
+import com.mtv.based.core.network.datasource.NetworkDataSource
+import com.mtv.based.core.network.datasource.RetrofitDataSource
 import com.mtv.based.core.network.model.NetworkResponse
 import javax.inject.Inject
 
 class RetrofitNetworkClient @Inject constructor(
-    private val apiService: RetrofitApi,
+    private val apiService: RetrofitDataSource,
     config: NetworkConfigProvider,
-) : NetworkClientInterface {
+) : NetworkDataSource {
 
     val baseUrl = config.provide().baseUrl
 

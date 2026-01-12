@@ -1,7 +1,7 @@
 package com.mtv.based.core.datasource
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.mtv.based.core.network.firebase.config.FirebaseConfig
+import com.mtv.based.core.network.config.FirebaseConfig
 import javax.inject.Inject
 
 class FirebaseUserDataSource @Inject constructor(

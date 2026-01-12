@@ -1,8 +1,8 @@
-package com.mtv.based.core.network.client
+package com.mtv.based.core.network.datasource
 
 import com.mtv.based.core.network.model.NetworkResponse
 
-interface NetworkClientInterface {
+interface NetworkDataSource {
 
     suspend fun get(
         endpoint: String,

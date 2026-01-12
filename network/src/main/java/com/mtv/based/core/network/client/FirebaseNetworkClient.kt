@@ -1,18 +1,20 @@
-package com.mtv.based.core.network.firebase.datasource
+package com.mtv.based.core.network.client
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.mtv.based.core.network.firebase.config.FirebaseConfig
-import com.mtv.based.core.network.firebase.result.FirebaseResult
-import com.mtv.based.core.network.firebase.utils.FirebaseUiError
+import com.mtv.based.core.network.config.FirebaseConfig
+import com.mtv.based.core.network.datasource.FirebaseDataSource
 import com.mtv.based.core.network.utils.ErrorMessages
+import com.mtv.based.core.network.utils.ResourceFirebase
+import com.mtv.based.core.network.utils.UiErrorFirebase
 import com.mtv.based.core.network.utils.toFirebaseUiError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.collections.iterator
 
-class FirebaseDataSourceImpl @Inject constructor(
+class FirebaseNetworkClient @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val config: FirebaseConfig
 ) : FirebaseDataSource {
@@ -21,8 +23,8 @@ class FirebaseDataSourceImpl @Inject constructor(
         collection: String,
         documentId: String,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<T>> = flow {
-        emit(FirebaseResult.Loading)
+    ): Flow<ResourceFirebase<T>> = flow {
+        emit(ResourceFirebase.Loading)
 
         try {
             val snapshot = firestore
@@ -34,9 +36,9 @@ class FirebaseDataSourceImpl @Inject constructor(
             val data = snapshot.data
                 ?: throw IllegalStateException(ErrorMessages.GENERIC_ERROR)
 
-            emit(FirebaseResult.Success(mapper(data)))
+            emit(ResourceFirebase.Success(mapper(data)))
         } catch (e: Exception) {
-            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+            emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
 
@@ -44,13 +46,12 @@ class FirebaseDataSourceImpl @Inject constructor(
         collection: String,
         data: Map<String, Any>,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<T>> = flow {
+    ): Flow<ResourceFirebase<T>> = flow {
 
-        emit(FirebaseResult.Loading)
+        emit(ResourceFirebase.Loading)
 
         var query: Query = firestore.collection(collection)
 
-        // Build dynamic query
         data.forEach { (key, value) ->
             query = query.whereEqualTo(key, value)
         }
@@ -58,13 +59,15 @@ class FirebaseDataSourceImpl @Inject constructor(
         val snapshot = query.get().await()
 
         if (snapshot.isEmpty) {
-            emit(FirebaseResult.Error(
-                FirebaseUiError.NotFound(ErrorMessages.NOT_FOUND)
-            ))
+            emit(
+                ResourceFirebase.Error(
+                    UiErrorFirebase.NotFound(ErrorMessages.NOT_FOUND)
+                )
+            )
         } else {
             val document = snapshot.documents.first()
             val map = document.data ?: emptyMap()
-            emit(FirebaseResult.Success(mapper(map)))
+            emit(ResourceFirebase.Success(mapper(map)))
         }
 
     }
@@ -72,8 +75,8 @@ class FirebaseDataSourceImpl @Inject constructor(
     override fun <T> getCollection(
         collection: String,
         mapper: (Map<String, Any>) -> T
-    ): Flow<FirebaseResult<List<T>>> = flow {
-        emit(FirebaseResult.Loading)
+    ): Flow<ResourceFirebase<List<T>>> = flow {
+        emit(ResourceFirebase.Loading)
 
         try {
             val snapshot = firestore
@@ -85,9 +88,9 @@ class FirebaseDataSourceImpl @Inject constructor(
                 it.data?.let(mapper)
             }
 
-            emit(FirebaseResult.Success(result))
+            emit(ResourceFirebase.Success(result))
         } catch (e: Exception) {
-            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+            emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
 
@@ -95,8 +98,8 @@ class FirebaseDataSourceImpl @Inject constructor(
         collection: String,
         documentId: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<Unit>> = flow {
-        emit(FirebaseResult.Loading)
+    ): Flow<ResourceFirebase<Unit>> = flow {
+        emit(ResourceFirebase.Loading)
         try {
             firestore
                 .collection(collection)
@@ -104,26 +107,26 @@ class FirebaseDataSourceImpl @Inject constructor(
                 .set(data)
                 .await()
 
-            emit(FirebaseResult.Success(Unit))
+            emit(ResourceFirebase.Success(Unit))
         } catch (e: Exception) {
-            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+            emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
 
     override fun addDocument(
         collection: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<String>> = flow {
-        emit(FirebaseResult.Loading)
+    ): Flow<ResourceFirebase<String>> = flow {
+        emit(ResourceFirebase.Loading)
         try {
             val documentRef = firestore
                 .collection(collection)
                 .add(data)
                 .await()
 
-            emit(FirebaseResult.Success(documentRef.id))
+            emit(ResourceFirebase.Success(documentRef.id))
         } catch (e: Exception) {
-            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+            emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
 
@@ -132,8 +135,8 @@ class FirebaseDataSourceImpl @Inject constructor(
         collection: String,
         documentId: String,
         data: Map<String, Any>
-    ): Flow<FirebaseResult<Unit>> = flow {
-        emit(FirebaseResult.Loading)
+    ): Flow<ResourceFirebase<Unit>> = flow {
+        emit(ResourceFirebase.Loading)
         try {
             firestore
                 .collection(collection)
@@ -141,9 +144,9 @@ class FirebaseDataSourceImpl @Inject constructor(
                 .update(data)
                 .await()
 
-            emit(FirebaseResult.Success(Unit))
+            emit(ResourceFirebase.Success(Unit))
         } catch (e: Exception) {
-            emit(FirebaseResult.Error(e.toFirebaseUiError()))
+            emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
 

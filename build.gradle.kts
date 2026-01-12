@@ -47,7 +47,8 @@ subprojects {
 
             if (!signingKeyFile.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
                 signing {
-                    setRequired { false } // Disable for Jitpack
+                    // Disable for Jitpack
+                    setRequired { false }
                     useInMemoryPgpKeys(
                         file(signingKeyFile!!).readText(),
                         signingPassword!!
@@ -61,16 +62,12 @@ subprojects {
 
 tasks.register("publishAllModulesToMavenLocal") {
     group = "publishing"
-    description = "Clean, assemble release, and publish all modules to Maven Local"
+    description = "Publish all modules to Maven Local"
 
-    val modules = listOf(
-        ":network",
-        ":provider"
-    )
-
-    modules.forEach { modulePath ->
-//        dependsOn("${modulePath}:clean")
-        dependsOn("${modulePath}:assembleRelease")
-        dependsOn("${modulePath}:publishToMavenLocal")
+    subprojects.forEach { sub ->
+        val publishTask = sub.tasks.findByName("publishToMavenLocal")
+        if (publishTask != null) {
+            dependsOn(publishTask)
+        }
     }
 }

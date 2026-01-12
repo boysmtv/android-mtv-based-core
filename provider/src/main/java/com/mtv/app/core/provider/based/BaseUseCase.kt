@@ -1,4 +1,4 @@
-package com.mtv.based.core.network.usecase
+package com.mtv.app.core.provider.based
 
 import com.mtv.based.core.network.model.BaseResponse
 import com.mtv.based.core.network.model.NetworkResponse

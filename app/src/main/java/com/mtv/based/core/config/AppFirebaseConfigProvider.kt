@@ -1,8 +1,8 @@
 package com.mtv.based.core.config
 
 import com.mtv.based.core.BuildConfig
-import com.mtv.based.core.network.firebase.config.FirebaseConfig
-import com.mtv.based.core.network.firebase.config.FirebaseConfigProvider
+import com.mtv.based.core.network.config.FirebaseConfig
+import com.mtv.based.core.network.config.FirebaseConfigProvider
 
 class AppFirebaseConfigProvider : FirebaseConfigProvider {
 
