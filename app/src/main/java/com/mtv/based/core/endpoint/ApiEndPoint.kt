@@ -16,19 +16,4 @@ class ApiEndPoint {
         override val method = HttpMethod.Post
     }
 
-    object CreateUser : IApiEndPoint {
-        override val path = "user/create"
-        override val method = HttpMethod.Post
-    }
-
-    class UpdateUser(id: String) : IApiEndPoint {
-        override val path = "users/$id"
-        override val method = HttpMethod.Put
-    }
-
-    class DeleteUser(id: String) : IApiEndPoint {
-        override val path = "users/$id"
-        override val method = HttpMethod.Delete
-    }
-
 }

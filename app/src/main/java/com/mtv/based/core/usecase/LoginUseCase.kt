@@ -13,12 +13,13 @@ import javax.inject.Inject
 class LoginUseCase @Inject constructor(
     private val repository: NetworkRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : BaseUseCase<LoginRequest, LoginResponse>(dispatcher, LoginResponse::class) {
+) : BaseUseCase<LoginRequest, LoginResponse>(dispatcher) {
 
-    override suspend fun execute(param: LoginRequest): NetworkResponse {
+    override suspend fun execute(param: LoginRequest): NetworkResponse<LoginResponse> {
         return repository.request(
             endpoint = ApiEndPoint.AuthLogin,
-            body = param
+            body = param,
+            serializer = LoginResponse.serializer()
         )
     }
 

@@ -3,6 +3,7 @@ package com.mtv.based.core.network.client
 import com.mtv.based.core.network.config.NetworkConfigProvider
 import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.model.NetworkResponse
+import com.mtv.based.core.network.model.RawNetworkResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -21,21 +22,22 @@ class KtorNetworkClient @Inject constructor(
     config: NetworkConfigProvider,
 ) : NetworkDataSource {
 
-    val baseUrl = config.provide().baseUrl
+    private val baseUrl = config.provide().baseUrl
 
     override suspend fun get(
         endpoint: String,
         query: Map<String, String>,
         headers: Map<String, String>
-    ): NetworkResponse {
-        val response = client.get("${baseUrl}$endpoint") {
+    ): RawNetworkResponse {
+
+        val response = client.get("$baseUrl$endpoint") {
             query.forEach { (k, v) -> parameter(k, v) }
             headers.forEach { (k, v) -> header(k, v) }
         }
 
-        return NetworkResponse(
-            body = response.bodyAsText(),
-            httpCode = response.status.value
+        return RawNetworkResponse(
+            httpCode = response.status.value,
+            body = response.bodyAsText()
         )
     }
 
@@ -43,16 +45,17 @@ class KtorNetworkClient @Inject constructor(
         endpoint: String,
         body: Any,
         headers: Map<String, String>
-    ): NetworkResponse {
-        val response = client.post("${baseUrl}$endpoint") {
+    ): RawNetworkResponse {
+
+        val response = client.post("$baseUrl$endpoint") {
             contentType(ContentType.Application.Json)
             setBody(body)
             headers.forEach { (k, v) -> header(k, v) }
         }
 
-        return NetworkResponse(
-            body = response.bodyAsText(),
-            httpCode = response.status.value
+        return RawNetworkResponse(
+            httpCode = response.status.value,
+            body = response.bodyAsText()
         )
     }
 
@@ -60,30 +63,32 @@ class KtorNetworkClient @Inject constructor(
         endpoint: String,
         body: Any,
         headers: Map<String, String>
-    ): NetworkResponse {
+    ): RawNetworkResponse {
+
         val response = client.put("$baseUrl$endpoint") {
             contentType(ContentType.Application.Json)
             setBody(body)
             headers.forEach { (k, v) -> header(k, v) }
         }
 
-        return NetworkResponse(
-            body = response.bodyAsText(),
-            httpCode = response.status.value
+        return RawNetworkResponse(
+            httpCode = response.status.value,
+            body = response.bodyAsText()
         )
     }
 
     override suspend fun delete(
         endpoint: String,
         headers: Map<String, String>
-    ): NetworkResponse {
+    ): RawNetworkResponse {
+
         val response = client.delete("$baseUrl$endpoint") {
             headers.forEach { (k, v) -> header(k, v) }
         }
 
-        return NetworkResponse(
-            body = response.bodyAsText(),
-            httpCode = response.status.value
+        return RawNetworkResponse(
+            httpCode = response.status.value,
+            body = response.bodyAsText()
         )
     }
 }
