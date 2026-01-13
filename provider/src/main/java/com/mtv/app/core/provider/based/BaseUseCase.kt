@@ -1,6 +1,5 @@
 package com.mtv.app.core.provider.based
 
-import com.mtv.based.core.network.model.BaseResponse
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
@@ -10,87 +9,69 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
-import kotlin.reflect.KClass
 
 abstract class BaseUseCase<P, T : Any>(
     private val dispatcher: CoroutineDispatcher,
-    clazz: KClass<T>
 ) {
-
-    @OptIn(InternalSerializationApi::class)
-    protected val serializer: KSerializer<T> = clazz.serializer()
-
-    protected val json = Json { ignoreUnknownKeys = true }
 
     operator fun invoke(param: P): Flow<Resource<T>> = flow {
         emit(Resource.Loading)
 
         try {
-            val raw = execute(param)
-            emit(handleResponse(raw))
-        } catch (t: Throwable) {
-            emit(Resource.Error(t.toUiError()))
+            val response = execute(param)
+            emit(handleResponse(response))
+        } catch (e: Throwable) {
+            emit(Resource.Error(e.toUiError()))
         }
 
     }.flowOn(dispatcher)
 
-    protected abstract suspend fun execute(param: P): NetworkResponse
+    /**
+     * Implementasi use case akan selalu mengembalikan NetworkResponse<T>
+     */
+    protected abstract suspend fun execute(param: P): NetworkResponse<T>
 
-    protected open fun handleResponse(raw: NetworkResponse): Resource<T> {
-
-        val baseResponse = runCatching {
-            json.decodeFromString(
-                BaseResponse.serializer(serializer),
-                raw.body
-            )
-        }.getOrNull()
-
-        val backendMessage = baseResponse?.message?.takeIf { it.isNotBlank() }
-
+    /**
+     * Default handler dari NetworkResponse ke Resource
+     * Bisa di override jika perlu custom behavior
+     */
+    protected open fun handleResponse(raw: NetworkResponse<T>): Resource<T> {
         return when (raw.httpCode) {
 
             in 200..299 -> {
-                baseResponse?.data?.let {
-                    Resource.Success(it)
-                } ?: Resource.Error(
-                    UiError.Unknown(ErrorMessages.GENERIC_ERROR)
-                )
+                raw.data?.let { Resource.Success(it) }
+                    ?: Resource.Error(UiError.Unknown(ErrorMessages.GENERIC_ERROR))
             }
 
             400 -> Resource.Error(
                 UiError.Validation(
-                    backendMessage ?: ErrorMessages.INVALID_INPUT
+                    raw.rawBody ?: ErrorMessages.INVALID_INPUT
                 )
             )
 
             401 -> Resource.Error(
                 UiError.Unauthorized(
-                    backendMessage ?: ErrorMessages.SESSION_EXPIRED
+                    raw.rawBody ?: ErrorMessages.SESSION_EXPIRED
                 )
             )
 
             403 -> Resource.Error(
                 UiError.Forbidden(
-                    backendMessage ?: ErrorMessages.ACCESS_DENIED
+                    raw.rawBody ?: ErrorMessages.ACCESS_DENIED
                 )
             )
 
             in 500..599 -> Resource.Error(
                 UiError.Server(
-                    backendMessage ?: ErrorMessages.SERVER_ERROR
+                    raw.rawBody ?: ErrorMessages.SERVER_ERROR
                 )
             )
 
             else -> Resource.Error(
                 UiError.Unknown(
-                    backendMessage ?: ErrorMessages.GENERIC_ERROR
+                    raw.rawBody ?: ErrorMessages.GENERIC_ERROR
                 )
             )
         }
     }
-
 }

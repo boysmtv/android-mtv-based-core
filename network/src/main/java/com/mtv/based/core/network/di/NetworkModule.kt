@@ -8,6 +8,9 @@ import com.mtv.based.core.network.datasource.RetrofitDataSource
 import com.mtv.based.core.network.client.RetrofitNetworkClient
 import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.config.NetworkConfigProvider
+import com.mtv.based.core.network.datasource.NetworkClientSelector
+import com.mtv.based.core.network.header.HeaderMerger
+import com.mtv.based.core.network.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +23,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -110,5 +114,23 @@ object NetworkModule {
         config: NetworkConfigProvider
     ): NetworkDataSource =
         RetrofitNetworkClient(apiService, config)
+
+    @Provides
+    fun provideNetworkRepository(
+        selector: NetworkClientSelector,
+        headerMerger: HeaderMerger,
+        json: Json
+    ): NetworkRepository {
+        return NetworkRepository(selector, headerMerger, json)
+    }
+
+    @Provides
+    @Singleton
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        encodeDefaults = true
+        prettyPrint = false
+    }
 
 }
