@@ -69,14 +69,22 @@ object NetworkModule {
     fun provideOkHttpClient(
         @ApplicationContext context: Context
     ): OkHttpClient {
+        val loggingInterceptor = okhttp3.logging.HttpLoggingInterceptor { message ->
+            Log.d("RetrofitNetwork", message)
+        }.apply {
+            level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+        }
+
         return OkHttpClient.Builder()
             .addInterceptor(
                 ChuckerInterceptor.Builder(context)
                     .redactHeaders("Authorization", "Cookie")
                     .build()
             )
+            .addInterceptor(loggingInterceptor)
             .build()
     }
+
 
     @Provides
     @Singleton

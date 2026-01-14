@@ -4,6 +4,11 @@ class Constants {
 
     companion object {
 
+        object Session {
+            const val SESSION_UID = "uid"
+            const val SESSION_IS_LOGGED_IN = "isLoggedIn"
+        }
+
         object DeviceInfoKeys {
 
             // Device identifiers
