@@ -1,6 +1,5 @@
 package com.mtv.based.core.network.repository
 
-import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.datasource.NetworkClientSelector
 import com.mtv.based.core.network.endpoint.IApiEndPoint
 import com.mtv.based.core.network.header.HeaderMerger
@@ -19,7 +18,20 @@ class NetworkRepository @Inject constructor(
 
     private val client = selector.get()
 
-    suspend fun <T> request(
+    suspend inline fun <reified T : Any> request(
+        endpoint: IApiEndPoint,
+        body: Any? = null,
+        options: RequestOptions = RequestOptions()
+    ): NetworkResponse<T> {
+        return doRequest(
+            endpoint = endpoint,
+            body = body,
+            options = options,
+            serializer = kotlinx.serialization.serializer()
+        )
+    }
+
+    suspend fun <T> doRequest(
         endpoint: IApiEndPoint,
         body: Any? = null,
         options: RequestOptions = RequestOptions(),
