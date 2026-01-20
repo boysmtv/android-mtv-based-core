@@ -8,6 +8,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
+import androidx.window.layout.WindowMetricsCalculator
 import java.io.File
 import java.util.Locale
 import java.util.TimeZone
@@ -18,8 +19,8 @@ class DeviceInfoProvider(
 ) {
 
     fun getAllDeviceInfo(): DeviceInfo {
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val windowMetrics = windowManager.currentWindowMetrics
+        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(context)
+        val bounds = metrics.bounds
 
         val battery = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -47,8 +48,8 @@ class DeviceInfoProvider(
             sdkVersion = Build.VERSION.SDK_INT,
             androidVersion = Build.VERSION.RELEASE,
 
-            screenWidth = windowMetrics.bounds.width(),
-            screenHeight = windowMetrics.bounds.height(),
+            screenWidth = bounds.width(),
+            screenHeight = bounds.height(),
             densityDpi = density,
 
             locale = Locale.getDefault().toString(),
