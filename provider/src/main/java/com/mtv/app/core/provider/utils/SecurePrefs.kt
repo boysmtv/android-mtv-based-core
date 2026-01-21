@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.core.content.edit
+import com.google.gson.Gson
 
 class SecurePrefs(context: Context) {
+
+    private val gson = Gson()
 
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -36,4 +39,25 @@ class SecurePrefs(context: Context) {
     fun clear() {
         prefs.edit { clear() }
     }
+
+    /* ============================================================
+     * OBJECT HANDLER
+     * ============================================================ */
+
+    fun <T> putObject(key: String, obj: T) {
+        val json = gson.toJson(obj)
+        prefs.edit {
+            putString(key, json)
+        }
+    }
+
+    fun <T> getObject(key: String, clazz: Class<T>): T? {
+        val json = prefs.getString(key, null) ?: return null
+        return try {
+            gson.fromJson(json, clazz)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
 }
