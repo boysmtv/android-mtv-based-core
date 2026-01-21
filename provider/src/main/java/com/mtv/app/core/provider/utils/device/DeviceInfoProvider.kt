@@ -1,5 +1,6 @@
 package com.mtv.app.core.provider.utils.device
 
+import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,7 +8,7 @@ import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.os.Build
 import android.provider.Settings
-import android.view.WindowManager
+import androidx.annotation.RequiresPermission
 import androidx.window.layout.WindowMetricsCalculator
 import java.io.File
 import java.util.Locale
@@ -34,7 +35,7 @@ class DeviceInfoProvider(
         val density = context.resources.displayMetrics.densityDpi
 
         return DeviceInfo(
-            installationId = installationIdProvider.getInstallationId(),
+            deviceId = installationIdProvider.getInstallationId(),
             androidId = Settings.Secure.getString(
                 context.contentResolver, Settings.Secure.ANDROID_ID
             ),
@@ -61,13 +62,13 @@ class DeviceInfoProvider(
             freeRamMb = memoryInfo.availMem / 1024 / 1024,
 
             appVersionName = packageInfo.versionName,
-            appVersionCode = packageInfo.longVersionCode,
+            appVersionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) packageInfo.longVersionCode else 0,
             firstInstallTime = packageInfo.firstInstallTime,
             lastUpdateTime = packageInfo.lastUpdateTime
         )
     }
 
-
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     private fun getNetworkType(cm: ConnectivityManager): String {
         val network = cm.activeNetwork ?: return "none"
         val caps = cm.getNetworkCapabilities(network) ?: return "none"

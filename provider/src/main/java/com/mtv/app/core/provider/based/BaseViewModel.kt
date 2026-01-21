@@ -61,6 +61,22 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    fun <S, T> BaseViewModel.collectFieldSuccess(
+        parent: StateFlow<S>,
+        selector: (S) -> ResourceFirebase<T>,
+        onSuccess: suspend (T) -> Unit
+    ) {
+        viewModelScope.launch {
+            parent.collect { state ->
+                val field = selector(state)
+                if (field is ResourceFirebase.Success) {
+                    onSuccess(field.data)
+                }
+            }
+        }
+    }
+
+
     /* ============================================================
      * ERROR HANDLER
      * ============================================================ */
