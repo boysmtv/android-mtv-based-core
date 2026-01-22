@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import kotlin.collections.iterator
+import kotlin.coroutines.cancellation.CancellationException
 
 class FirebaseNetworkClient @Inject constructor(
     private val firestore: FirebaseFirestore,
@@ -50,27 +51,40 @@ class FirebaseNetworkClient @Inject constructor(
 
         emit(ResourceFirebase.Loading)
 
-        var query: Query = firestore.collection(collection)
+        try {
+            var query: Query = firestore.collection(collection)
 
-        data.forEach { (key, value) ->
-            query = query.whereEqualTo(key, value)
-        }
+            data.forEach { (key, value) ->
+                query = query.whereEqualTo(key, value)
+            }
 
-        val snapshot = query.get().await()
+            val snapshot = query.get().await()
 
-        if (snapshot.isEmpty) {
+            if (snapshot.isEmpty) {
+                emit(
+                    ResourceFirebase.Error(
+                        UiErrorFirebase.NotFound(ErrorMessages.NOT_FOUND)
+                    )
+                )
+                return@flow
+            }
+
+            val document = snapshot.documents.first()
+            val map = (document.data ?: emptyMap()) + ("id" to document.id)
+            emit(ResourceFirebase.Success(mapper(map)))
+
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
             emit(
                 ResourceFirebase.Error(
-                    UiErrorFirebase.NotFound(ErrorMessages.NOT_FOUND)
+                    UiErrorFirebase.Unknown(
+                        e.message ?: ErrorMessages.GENERIC_ERROR
+                    )
                 )
             )
-        } else {
-            val document = snapshot.documents.first()
-            val map = document.data ?: emptyMap()
-            emit(ResourceFirebase.Success(mapper(map)))
         }
-
     }
+
 
     override fun <T> getCollection(
         collection: String,
