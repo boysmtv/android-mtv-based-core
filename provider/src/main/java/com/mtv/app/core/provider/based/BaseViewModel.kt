@@ -1,6 +1,5 @@
 package com.mtv.app.core.provider.based
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mtv.based.core.network.utils.ResourceFirebase
@@ -44,14 +43,17 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun <T> launchFirebaseUseCase(
         target: MutableStateFlow<ResourceFirebase<T>>,
-        block: suspend () -> Flow<ResourceFirebase<T>>
+        block: suspend () -> Flow<ResourceFirebase<T>>,
+        loading: Boolean = true,
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
 
-                _baseUiState.update {
-                    it.copy(isLoading = result is ResourceFirebase.Loading)
+                if (loading) {
+                    _baseUiState.update {
+                        it.copy(isLoading = result is ResourceFirebase.Loading)
+                    }
                 }
 
                 if (result is ResourceFirebase.Error) {
