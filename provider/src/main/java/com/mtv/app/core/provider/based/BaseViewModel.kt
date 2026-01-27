@@ -19,9 +19,6 @@ abstract class BaseViewModel : ViewModel() {
     protected val _baseUiState = MutableStateFlow(BaseUiState())
     val baseUiState: StateFlow<BaseUiState> = _baseUiState
 
-    /* ============================================================
-     * NETWORK USE CASE
-     * ============================================================ */
     protected fun <T> launchUseCase(
         target: MutableStateFlow<Resource<T>>,
         block: suspend () -> Flow<Resource<T>>
@@ -78,10 +75,6 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-
-    /* ============================================================
-     * ERROR HANDLER
-     * ============================================================ */
     private fun showError(error: UiError) {
         val message = error.message
             .takeIf { it.isNotBlank() }

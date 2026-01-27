@@ -1,6 +1,5 @@
 package com.mtv.app.core.provider.based
 
-import android.util.Log
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
@@ -22,23 +21,13 @@ abstract class BaseUseCase<P, T : Any>(
             val response = execute(param)
             emit(handleResponse(response))
         } catch (e: Throwable) {
-            Log.e("ERROR-BOYS", "BaseUseCase")
-            Log.e("ERROR-BOYS", "msg: " + e.message)
-            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(Resource.Error(e.toUiError()))
         }
 
     }.flowOn(dispatcher)
 
-    /**
-     * Implementasi use case akan selalu mengembalikan NetworkResponse<T>
-     */
     protected abstract suspend fun execute(param: P): NetworkResponse<T>
 
-    /**
-     * Default handler dari NetworkResponse ke Resource
-     * Bisa di override jika perlu custom behavior
-     */
     protected open fun handleResponse(raw: NetworkResponse<T>): Resource<T> {
         return when (raw.httpCode) {
 
