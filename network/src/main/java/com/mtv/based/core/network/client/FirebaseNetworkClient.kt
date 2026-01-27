@@ -1,5 +1,6 @@
 package com.mtv.based.core.network.client
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.mtv.based.core.network.config.FirebaseConfig
@@ -39,6 +40,9 @@ class FirebaseNetworkClient @Inject constructor(
 
             emit(ResourceFirebase.Success(mapper(data)))
         } catch (e: Exception) {
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - getDocument")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
@@ -75,6 +79,9 @@ class FirebaseNetworkClient @Inject constructor(
 
         } catch (e: Exception) {
             if (e is CancellationException) throw e
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - getDocumentByFields")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(
                 ResourceFirebase.Error(
                     UiErrorFirebase.Unknown(
@@ -104,6 +111,9 @@ class FirebaseNetworkClient @Inject constructor(
 
             emit(ResourceFirebase.Success(result))
         } catch (e: Exception) {
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - getCollection")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
@@ -123,6 +133,9 @@ class FirebaseNetworkClient @Inject constructor(
 
             emit(ResourceFirebase.Success(Unit))
         } catch (e: Exception) {
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - setDocument")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
@@ -140,10 +153,12 @@ class FirebaseNetworkClient @Inject constructor(
 
             emit(ResourceFirebase.Success(documentRef.id))
         } catch (e: Exception) {
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - addDocument")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }
-
 
     override fun updateDocument(
         collection: String,
@@ -160,6 +175,9 @@ class FirebaseNetworkClient @Inject constructor(
 
             emit(ResourceFirebase.Success(Unit))
         } catch (e: Exception) {
+            Log.e("ERROR-BOYS", "FirebaseNetworkClient - updateDocument")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(ResourceFirebase.Error(e.toFirebaseUiError()))
         }
     }

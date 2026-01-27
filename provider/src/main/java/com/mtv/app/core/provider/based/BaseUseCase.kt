@@ -1,5 +1,6 @@
 package com.mtv.app.core.provider.based
 
+import android.util.Log
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
@@ -21,6 +22,9 @@ abstract class BaseUseCase<P, T : Any>(
             val response = execute(param)
             emit(handleResponse(response))
         } catch (e: Throwable) {
+            Log.e("ERROR-BOYS", "BaseUseCase")
+            Log.e("ERROR-BOYS", "msg: " + e.message)
+            Log.e("ERROR-BOYS", "msg: " + e.localizedMessage)
             emit(Resource.Error(e.toUiError()))
         }
 
