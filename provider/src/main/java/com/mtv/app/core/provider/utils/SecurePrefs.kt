@@ -36,9 +36,9 @@ class SecurePrefs(context: Context) {
     fun getBoolean(key: String, default: Boolean = false): Boolean =
         prefs.getBoolean(key, default)
 
-    fun clear() {
-        prefs.edit { clear() }
-    }
+    fun remove(key: String) = prefs.edit { remove(key) }
+
+    fun clear() = prefs.edit { clear() }
 
     /* ============================================================
      * OBJECT HANDLER
