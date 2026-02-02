@@ -1,8 +1,8 @@
 package com.mtv.app.core.provider.based
 
-import com.mtv.based.uicomponent.core.component.dialog.dialogv1.ErrorDialogStateV1
+import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogStateV1
 
 data class BaseUiState(
     val isLoading: Boolean = false,
-    val errorDialog: ErrorDialogStateV1? = null
+    val errorDialog: DialogStateV1? = null
 )
