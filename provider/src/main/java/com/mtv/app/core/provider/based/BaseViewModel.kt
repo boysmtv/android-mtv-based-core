@@ -7,7 +7,8 @@ import com.mtv.based.core.network.utils.UiErrorFirebase
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
-import com.mtv.based.uicomponent.core.component.dialog.dialogv1.ErrorDialogStateV1
+import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogStateV1
+import com.mtv.based.uicomponent.core.ui.util.Constants.Companion.WARNING_STRING
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -82,7 +83,8 @@ abstract class BaseViewModel : ViewModel() {
 
         _baseUiState.update {
             it.copy(
-                errorDialog = ErrorDialogStateV1(
+                errorDialog = DialogStateV1(
+                    title = WARNING_STRING,
                     message = message
                 )
             )
@@ -96,7 +98,8 @@ abstract class BaseViewModel : ViewModel() {
 
         _baseUiState.update {
             it.copy(
-                errorDialog = ErrorDialogStateV1(
+                errorDialog = DialogStateV1(
+                    title = WARNING_STRING,
                     message = message
                 )
             )
