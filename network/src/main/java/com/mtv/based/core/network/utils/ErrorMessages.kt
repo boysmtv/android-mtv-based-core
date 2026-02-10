@@ -1,7 +1,6 @@
 package com.mtv.based.core.network.utils
 
 object ErrorMessages {
-
     const val GENERIC_ERROR = "Something went wrong"
     const val INVALID_INPUT = "Invalid input"
     const val SESSION_EXPIRED = "Session has expired"
@@ -16,5 +15,9 @@ object ErrorMessages {
     const val AUTH_METHOD_DISABLED = "Authentication method is disabled"
     const val TOO_MANY_LOGIN_ATTEMPTS = "Too many login attempts"
     const val ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL = "Account exists with different credential"
+    const val INVALID_CREDENTIALS = "Invalid email or password"
+    const val WRONG_PASSWORD = "Incorrect password"
+    const val WEAK_PASSWORD = "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol"
+    const val RECENT_LOGIN_REQUIRED = "Please re-login to continue"
 }
 
