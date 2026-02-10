@@ -1,3 +1,11 @@
+/*
+ * Project: App Core Compose
+ * Author: Boys.mtv@gmail.com
+ * File: BaseViewModel.kt
+ *
+ * Last modified by Dedy Wijaya on 03/02/26 11.53
+ */
+
 package com.mtv.app.core.provider.based
 
 import androidx.lifecycle.ViewModel
@@ -22,19 +30,16 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun <T> launchUseCase(
         target: MutableStateFlow<Resource<T>>,
-        block: suspend () -> Flow<Resource<T>>
+        block: suspend () -> Flow<Resource<T>>,
+        loading: Boolean = true,
+        onSuccess: (T) -> Unit = {}
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
-
-                _baseUiState.update {
-                    it.copy(isLoading = result is Resource.Loading)
-                }
-
-                if (result is Resource.Error) {
-                    showError(result.error)
-                }
+                if (loading) _baseUiState.update { it.copy(isLoading = result is Resource.Loading) }
+                if (result is Resource.Success) onSuccess(result.data)
+                if (result is Resource.Error) showError(result.error)
             }
         }
     }
@@ -43,35 +48,14 @@ abstract class BaseViewModel : ViewModel() {
         target: MutableStateFlow<ResourceFirebase<T>>,
         block: suspend () -> Flow<ResourceFirebase<T>>,
         loading: Boolean = true,
+        onSuccess: (T) -> Unit = {}
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
-
-                if (loading) {
-                    _baseUiState.update {
-                        it.copy(isLoading = result is ResourceFirebase.Loading)
-                    }
-                }
-
-                if (result is ResourceFirebase.Error) {
-                    showFirebaseError(result.error)
-                }
-            }
-        }
-    }
-
-    fun <S, T> BaseViewModel.collectFieldSuccess(
-        parent: StateFlow<S>,
-        selector: (S) -> ResourceFirebase<T>,
-        onSuccess: suspend (T) -> Unit
-    ) {
-        viewModelScope.launch {
-            parent.collect { state ->
-                val field = selector(state)
-                if (field is ResourceFirebase.Success) {
-                    onSuccess(field.data)
-                }
+                if (loading) _baseUiState.update { it.copy(isLoading = result is ResourceFirebase.Loading) }
+                if (result is ResourceFirebase.Success) onSuccess(result.data)
+                if (result is ResourceFirebase.Error) showFirebaseError(result.error)
             }
         }
     }
