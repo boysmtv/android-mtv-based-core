@@ -32,14 +32,21 @@ abstract class BaseViewModel : ViewModel() {
         target: MutableStateFlow<Resource<T>>,
         block: suspend () -> Flow<Resource<T>>,
         loading: Boolean = true,
-        onSuccess: (T) -> Unit = {}
+        onSuccess: (T) -> Unit = {},
+        onComplete: () -> Unit = {}
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
                 if (loading) _baseUiState.update { it.copy(isLoading = result is Resource.Loading) }
-                if (result is Resource.Success) onSuccess(result.data)
-                if (result is Resource.Error) showError(result.error)
+                if (result is Resource.Success) {
+                    onSuccess(result.data)
+                    onComplete()
+                }
+                if (result is Resource.Error) {
+                    showError(result.error)
+                    onComplete()
+                }
             }
         }
     }
@@ -48,14 +55,21 @@ abstract class BaseViewModel : ViewModel() {
         target: MutableStateFlow<ResourceFirebase<T>>,
         block: suspend () -> Flow<ResourceFirebase<T>>,
         loading: Boolean = true,
-        onSuccess: (T) -> Unit = {}
+        onSuccess: (T) -> Unit = {},
+        onComplete: () -> Unit = {}
     ) {
         viewModelScope.launch {
             block().collect { result ->
                 target.value = result
                 if (loading) _baseUiState.update { it.copy(isLoading = result is ResourceFirebase.Loading) }
-                if (result is ResourceFirebase.Success) onSuccess(result.data)
-                if (result is ResourceFirebase.Error) showFirebaseError(result.error)
+                if (result is ResourceFirebase.Success) {
+                    onSuccess(result.data)
+                    onComplete()
+                }
+                if (result is ResourceFirebase.Error) {
+                    showFirebaseError(result.error)
+                    onComplete()
+                }
             }
         }
     }

@@ -16,7 +16,6 @@ import java.util.TimeZone
 
 class DeviceInfoProvider(
     private val context: Context,
-    private val installationIdProvider: InstallationIdProvider
 ) {
 
     fun getAllDeviceInfo(): DeviceInfo {
@@ -35,7 +34,6 @@ class DeviceInfoProvider(
         val density = context.resources.displayMetrics.densityDpi
 
         return DeviceInfo(
-            deviceId = installationIdProvider.getInstallationId(),
             androidId = Settings.Secure.getString(
                 context.contentResolver, Settings.Secure.ANDROID_ID
             ),

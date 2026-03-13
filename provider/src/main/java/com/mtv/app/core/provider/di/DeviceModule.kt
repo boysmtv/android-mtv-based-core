@@ -26,9 +26,8 @@ class DeviceModule {
     @Singleton
     fun provideDeviceInfoProvider(
         @ApplicationContext context: Context,
-        installationIdProvider: InstallationIdProvider
     ): DeviceInfoProvider {
-        return DeviceInfoProvider(context, installationIdProvider)
+        return DeviceInfoProvider(context)
     }
 
 }
