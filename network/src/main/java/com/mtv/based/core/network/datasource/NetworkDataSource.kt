@@ -22,8 +22,26 @@ interface NetworkDataSource {
         headers: Map<String, String> = emptyMap()
     ): RawNetworkResponse
 
+    suspend fun patch(
+        endpoint: String,
+        body: Any,
+        headers: Map<String, String> = emptyMap()
+    ): RawNetworkResponse
+
     suspend fun delete(
         endpoint: String,
         headers: Map<String, String> = emptyMap()
     ): RawNetworkResponse
+
+    suspend fun multipart(
+        endpoint: String,
+        parts: Map<String, Any>,
+        headers: Map<String, String> = emptyMap()
+    ): RawNetworkResponse
+
+    suspend fun download(
+        endpoint: String,
+        headers: Map<String, String> = emptyMap()
+    ): ByteArray
+
 }

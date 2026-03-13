@@ -9,7 +9,10 @@ import com.mtv.based.core.network.client.RetrofitNetworkClient
 import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.config.NetworkConfigProvider
 import com.mtv.based.core.network.datasource.NetworkClientSelector
+import com.mtv.based.core.network.handler.RequestHandler
+import com.mtv.based.core.network.handler.RequestHandlerResolver
 import com.mtv.based.core.network.header.HeaderMerger
+import com.mtv.based.core.network.policy.RetryPolicy
 import com.mtv.based.core.network.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
@@ -46,12 +49,15 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideKtorHttpClient(
-        provider: NetworkConfigProvider
+        provider: NetworkConfigProvider,
+        json: Json
     ): HttpClient =
         HttpClient(CIO) {
+
             expectSuccess = false
+
             install(ContentNegotiation) {
-                json()
+                json(json)
             }
 
             install(Logging) {
@@ -126,10 +132,18 @@ object NetworkModule {
     fun provideNetworkRepository(
         selector: NetworkClientSelector,
         headerMerger: HeaderMerger,
-        json: Json
+        resolver: RequestHandlerResolver
     ): NetworkRepository {
-        return NetworkRepository(selector, headerMerger, json)
+        return NetworkRepository(
+            selector = selector,
+            headerMerger = headerMerger,
+            resolver = resolver
+        )
     }
+
+    @Provides
+    @Singleton
+    fun provideRetryPolicy(): RetryPolicy = RetryPolicy()
 
     @Provides
     @Singleton

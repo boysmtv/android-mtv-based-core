@@ -2,60 +2,35 @@ package com.mtv.based.core.network.repository
 
 import com.mtv.based.core.network.datasource.NetworkClientSelector
 import com.mtv.based.core.network.endpoint.IApiEndPoint
+import com.mtv.based.core.network.handler.RequestHandlerResolver
 import com.mtv.based.core.network.header.HeaderMerger
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.model.RequestOptions
-import com.mtv.based.core.network.utils.HttpMethod
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class NetworkRepository @Inject constructor(
-    selector: NetworkClientSelector,
-    private val headerMerger: HeaderMerger,
-    private val json: Json
+    val selector: NetworkClientSelector,
+    val headerMerger: HeaderMerger,
+    val resolver: RequestHandlerResolver
 ) {
-
-    private val client = selector.get()
 
     suspend inline fun <reified T : Any> request(
         endpoint: IApiEndPoint,
         body: Any? = null,
         options: RequestOptions = RequestOptions()
     ): NetworkResponse<T> {
-        return doRequest(
+
+        val client = selector.get()
+        val headers = headerMerger.build()
+        val handler = resolver.resolve(endpoint.type)
+
+        return handler.handle(
+            client = client,
             endpoint = endpoint,
             body = body,
-            options = options,
-            serializer = kotlinx.serialization.serializer()
-        )
-    }
-
-    suspend fun <T> doRequest(
-        endpoint: IApiEndPoint,
-        body: Any? = null,
-        options: RequestOptions = RequestOptions(),
-        serializer: KSerializer<T>
-    ): NetworkResponse<T> {
-
-        val headers = headerMerger.build()
-
-        val raw = when (endpoint.method) {
-            HttpMethod.Get -> client.get(endpoint.path, options.query, headers)
-            HttpMethod.Post -> client.post(endpoint.path, body ?: Unit, headers)
-            HttpMethod.Put -> client.put(endpoint.path, body ?: Unit, headers)
-            HttpMethod.Delete -> client.delete(endpoint.path, headers)
-        }
-
-        val parsed = runCatching {
-            json.decodeFromString(serializer, raw.body)
-        }.getOrNull()
-
-        return NetworkResponse(
-            httpCode = raw.httpCode,
-            data = parsed,
-            rawBody = raw.body
+            headers = headers,
+            serializer = kotlinx.serialization.serializer(),
+            options = options
         )
     }
 }
-

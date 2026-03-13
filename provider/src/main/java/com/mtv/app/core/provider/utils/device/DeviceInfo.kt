@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeviceInfo(
-    val deviceId: String?,
     val androidId: String?,
 
     val brand: String?,

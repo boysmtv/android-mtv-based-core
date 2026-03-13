@@ -1,13 +1,19 @@
 package com.mtv.based.core.network.datasource
 
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.QueryMap
+import retrofit2.http.Streaming
 import retrofit2.http.Url
 
 interface RetrofitDataSource {
@@ -33,10 +39,32 @@ interface RetrofitDataSource {
         @HeaderMap headers: Map<String, String> = emptyMap()
     ): Response<String>
 
+    @PATCH
+    suspend fun patch(
+        @Url url: String,
+        @Body body: Any,
+        @HeaderMap headers: Map<String, String>
+    ): Response<String>
+
     @DELETE
     suspend fun delete(
         @Url url: String,
         @HeaderMap headers: Map<String, String> = emptyMap()
     ): Response<String>
+
+    @Multipart
+    @POST
+    suspend fun multipart(
+        @Url url: String,
+        @Part parts: List<MultipartBody.Part>,
+        @HeaderMap headers: Map<String, String>
+    ): Response<String>
+
+    @Streaming
+    @GET
+    suspend fun download(
+        @Url url: String,
+        @HeaderMap headers: Map<String, String>
+    ): Response<ResponseBody>
 
 }

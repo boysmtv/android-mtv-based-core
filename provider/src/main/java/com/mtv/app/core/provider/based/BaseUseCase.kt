@@ -1,5 +1,6 @@
 package com.mtv.app.core.provider.based
 
+import com.mtv.based.core.network.model.ApiErrorResponse
 import com.mtv.based.core.network.model.NetworkResponse
 import com.mtv.based.core.network.utils.ErrorMessages
 import com.mtv.based.core.network.utils.Resource
@@ -9,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
 
 abstract class BaseUseCase<P, T : Any>(
     private val dispatcher: CoroutineDispatcher,
@@ -29,42 +31,63 @@ abstract class BaseUseCase<P, T : Any>(
     protected abstract suspend fun execute(param: P): NetworkResponse<T>
 
     protected open fun handleResponse(raw: NetworkResponse<T>): Resource<T> {
+
+        val message = extractMessage(raw)
+
         return when (raw.httpCode) {
 
             in 200..299 -> {
                 raw.data?.let { Resource.Success(it) }
-                    ?: Resource.Error(UiError.Unknown(ErrorMessages.GENERIC_ERROR))
+                    ?: Resource.Error(
+                        UiError.Unknown(
+                            message ?: ErrorMessages.GENERIC_ERROR
+                        )
+                    )
             }
 
             400 -> Resource.Error(
                 UiError.Validation(
-                    raw.rawBody ?: ErrorMessages.INVALID_INPUT
+                    message ?: ErrorMessages.INVALID_INPUT
                 )
             )
 
             401 -> Resource.Error(
                 UiError.Unauthorized(
-                    raw.rawBody ?: ErrorMessages.SESSION_EXPIRED
+                    message ?: ErrorMessages.SESSION_EXPIRED
                 )
             )
 
             403 -> Resource.Error(
                 UiError.Forbidden(
-                    raw.rawBody ?: ErrorMessages.ACCESS_DENIED
+                    message ?: ErrorMessages.ACCESS_DENIED
                 )
             )
 
             in 500..599 -> Resource.Error(
                 UiError.Server(
-                    raw.rawBody ?: ErrorMessages.SERVER_ERROR
+                    message ?: ErrorMessages.SERVER_ERROR
                 )
             )
 
             else -> Resource.Error(
                 UiError.Unknown(
-                    raw.rawBody ?: ErrorMessages.GENERIC_ERROR
+                    message ?: ErrorMessages.GENERIC_ERROR
                 )
             )
+        }
+    }
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
+    private fun extractMessage(raw: NetworkResponse<*>): String? {
+        return try {
+            raw.rawBody?.let {
+                json.decodeFromString(ApiErrorResponse.serializer(), it).message
+            }
+        } catch (e: Exception) {
+            null
         }
     }
 }

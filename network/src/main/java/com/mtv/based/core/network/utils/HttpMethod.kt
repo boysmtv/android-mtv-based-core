@@ -8,5 +8,5 @@
 package com.mtv.based.core.network.utils
 
 enum class HttpMethod {
-    Get, Post, Put, Delete
+    Get, Post, Put, Patch, Delete
 }

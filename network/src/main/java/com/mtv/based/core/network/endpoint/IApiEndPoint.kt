@@ -5,4 +5,5 @@ import com.mtv.based.core.network.utils.HttpMethod
 interface IApiEndPoint {
     val path: String
     val method: HttpMethod
+    val type: EndpointType
 }
