@@ -1,4 +1,4 @@
-package com.mtv.app.core.provider.utils
+package com.mtv.based.core.provider.utils
 
 import kotlin.collections.get
 import kotlin.reflect.KProperty1

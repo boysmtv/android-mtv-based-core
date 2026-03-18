@@ -1,4 +1,4 @@
-package com.mtv.app.core.provider
+package com.mtv.based.core.provider
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

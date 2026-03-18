@@ -1,4 +1,4 @@
-package com.mtv.app.core.provider.utils.device
+package com.mtv.based.core.provider.utils.device
 
 import android.Manifest
 import android.app.ActivityManager

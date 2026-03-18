@@ -1,8 +1,9 @@
-package com.mtv.app.core.provider.di
+package com.mtv.based.core.provider.di
 
 import android.content.Context
-import com.mtv.app.core.provider.utils.SecurePrefs
-import com.mtv.app.core.provider.utils.SessionManager
+import com.mtv.based.core.provider.utils.SecurePrefs
+import com.mtv.based.core.provider.utils.SessionManager
+import com.mtv.based.core.network.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,18 @@ object SessionModule {
     @Singleton
     fun provideSessionManager(securePrefs: SecurePrefs): SessionManager {
         return SessionManager(securePrefs)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(
+        sessionManager: SessionManager
+    ): AuthInterceptor {
+        return AuthInterceptor(
+            onUnauthorized = {
+                sessionManager.forceLogout()
+            }
+        )
     }
 
 }
