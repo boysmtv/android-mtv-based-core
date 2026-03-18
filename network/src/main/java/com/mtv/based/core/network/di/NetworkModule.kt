@@ -17,6 +17,7 @@ import com.mtv.based.core.network.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -73,7 +74,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        context: Context,
+        @ApplicationContext context: Context,
         authInterceptor: AuthInterceptor
     ): OkHttpClient {
 
