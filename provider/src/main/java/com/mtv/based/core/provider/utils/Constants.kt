@@ -1,4 +1,4 @@
-package com.mtv.app.core.provider.utils
+package com.mtv.based.core.provider.utils
 
 class Constants {
 

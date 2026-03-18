@@ -1,4 +1,4 @@
-package com.mtv.app.core.provider.based
+package com.mtv.based.core.provider.based
 
 import com.mtv.based.core.network.utils.ResourceFirebase
 import com.mtv.based.core.network.utils.toFirebaseUiError

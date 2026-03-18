@@ -6,7 +6,7 @@
  * Last modified by Dedy Wijaya on 03/02/26 11.53
  */
 
-package com.mtv.app.core.provider.based
+package com.mtv.based.core.provider.based
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

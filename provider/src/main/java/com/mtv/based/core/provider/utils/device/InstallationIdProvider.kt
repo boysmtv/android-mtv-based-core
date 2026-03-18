@@ -1,7 +1,7 @@
-package com.mtv.app.core.provider.utils.device
+package com.mtv.based.core.provider.utils.device
 
-import com.mtv.app.core.provider.utils.Constants.Companion.DeviceInfoKeys.INSTALLATION_ID
-import com.mtv.app.core.provider.utils.SecurePrefs
+import com.mtv.based.core.provider.utils.Constants.Companion.DeviceInfoKeys.INSTALLATION_ID
+import com.mtv.based.core.provider.utils.SecurePrefs
 import java.util.UUID
 import javax.inject.Inject
 

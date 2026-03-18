@@ -4,20 +4,19 @@ import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.mtv.based.core.network.client.KtorNetworkClient
-import com.mtv.based.core.network.datasource.RetrofitDataSource
 import com.mtv.based.core.network.client.RetrofitNetworkClient
-import com.mtv.based.core.network.datasource.NetworkDataSource
 import com.mtv.based.core.network.config.NetworkConfigProvider
 import com.mtv.based.core.network.datasource.NetworkClientSelector
-import com.mtv.based.core.network.handler.RequestHandler
+import com.mtv.based.core.network.datasource.NetworkDataSource
+import com.mtv.based.core.network.datasource.RetrofitDataSource
 import com.mtv.based.core.network.handler.RequestHandlerResolver
 import com.mtv.based.core.network.header.HeaderMerger
+import com.mtv.based.core.network.interceptor.AuthInterceptor
 import com.mtv.based.core.network.policy.RetryPolicy
 import com.mtv.based.core.network.repository.NetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -26,13 +25,14 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import javax.inject.Qualifier
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
@@ -73,15 +73,18 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        @ApplicationContext context: Context
+        context: Context,
+        authInterceptor: AuthInterceptor
     ): OkHttpClient {
-        val loggingInterceptor = okhttp3.logging.HttpLoggingInterceptor { message ->
+
+        val loggingInterceptor = HttpLoggingInterceptor { message ->
             Log.d("RetrofitNetwork", message)
         }.apply {
-            level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+            level = HttpLoggingInterceptor.Level.BODY
         }
 
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(
                 ChuckerInterceptor.Builder(context)
                     .redactHeaders("Authorization", "Cookie")

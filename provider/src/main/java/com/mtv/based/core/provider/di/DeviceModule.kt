@@ -1,10 +1,9 @@
-package com.mtv.app.core.provider.di
+package com.mtv.based.core.provider.di
 
 import android.content.Context
-import com.mtv.app.core.provider.utils.SecurePrefs
-import com.mtv.app.core.provider.utils.SessionManager
-import com.mtv.app.core.provider.utils.device.DeviceInfoProvider
-import com.mtv.app.core.provider.utils.device.InstallationIdProvider
+import com.mtv.based.core.provider.utils.SecurePrefs
+import com.mtv.based.core.provider.utils.device.DeviceInfoProvider
+import com.mtv.based.core.provider.utils.device.InstallationIdProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
