@@ -10,16 +10,15 @@ package com.mtv.based.core.provider.based
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mtv.based.core.network.utils.ResourceFirebase
-import com.mtv.based.core.network.utils.UiErrorFirebase
-import com.mtv.based.core.network.utils.ErrorMessages
+import com.mtv.based.core.network.utils.LoadState
 import com.mtv.based.core.network.utils.Resource
 import com.mtv.based.core.network.utils.UiError
-import com.mtv.based.uicomponent.core.component.dialog.dialogv1.DialogStateV1
-import com.mtv.based.uicomponent.core.ui.util.Constants.Companion.WARNING_STRING
+import com.mtv.based.core.provider.utils.dialog.UiDialog
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,85 +27,68 @@ abstract class BaseViewModel : ViewModel() {
     protected val _baseUiState = MutableStateFlow(BaseUiState())
     val baseUiState: StateFlow<BaseUiState> = _baseUiState
 
-    protected fun <T> launchUseCase(
-        target: MutableStateFlow<Resource<T>>,
-        block: suspend () -> Flow<Resource<T>>,
-        loading: Boolean = true,
-        onSuccess: (T) -> Unit = {},
-        onComplete: () -> Unit = {}
+    private var loadingCount = 0
+
+    private var job: Job? = null
+
+    protected fun <T> observeDataFlow(
+        flow: Flow<Resource<T>>,
+        onLoad: (() -> Unit)? = null,
+        onError: ((UiError) -> Unit)? = null,
+        onSuccess: ((T) -> Unit)? = null,
+        onState: ((LoadState<T>) -> Unit)? = null
     ) {
-        viewModelScope.launch {
-            block().collect { result ->
-                target.value = result
-                if (loading) _baseUiState.update { it.copy(isLoading = result is Resource.Loading) }
-                if (result is Resource.Success) {
-                    onSuccess(result.data)
-                    onComplete()
-                }
-                if (result is Resource.Error) {
-                    showError(result.error)
-                    onComplete()
+        job?.cancel()
+        job = viewModelScope.launch {
+            flow.collectLatest { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        onLoad?.invoke()
+                        onState?.invoke(LoadState.Loading)
+                    }
+
+                    is Resource.Success -> {
+                        onSuccess?.invoke(result.data)
+                        onState?.invoke(LoadState.Success(result.data))
+                    }
+
+                    is Resource.Error -> {
+                        onError?.invoke(result.error)
+                        onState?.invoke(LoadState.Error(result.error))
+                    }
+
+                    else -> Unit
                 }
             }
         }
     }
 
-    protected fun <T> launchFirebaseUseCase(
-        target: MutableStateFlow<ResourceFirebase<T>>,
-        block: suspend () -> Flow<ResourceFirebase<T>>,
-        loading: Boolean = true,
-        onSuccess: (T) -> Unit = {},
-        onComplete: () -> Unit = {}
-    ) {
-        viewModelScope.launch {
-            block().collect { result ->
-                target.value = result
-                if (loading) _baseUiState.update { it.copy(isLoading = result is ResourceFirebase.Loading) }
-                if (result is ResourceFirebase.Success) {
-                    onSuccess(result.data)
-                    onComplete()
-                }
-                if (result is ResourceFirebase.Error) {
-                    showFirebaseError(result.error)
-                    onComplete()
-                }
-            }
-        }
+    fun showLoading() {
+        loadingCount++
+        updateLoading()
     }
 
-    private fun showError(error: UiError) {
-        val message = error.message
-            .takeIf { it.isNotBlank() }
-            ?: ErrorMessages.GENERIC_ERROR
+    fun hideLoading() {
+        loadingCount = (loadingCount - 1).coerceAtLeast(0)
+        updateLoading()
+    }
 
+    private fun updateLoading() {
         _baseUiState.update {
-            it.copy(
-                errorDialog = DialogStateV1(
-                    title = WARNING_STRING,
-                    message = message
-                )
-            )
+            it.copy(isLoading = loadingCount > 0)
         }
     }
 
-    private fun showFirebaseError(error: UiErrorFirebase) {
-        val message = error.message
-            .takeIf { it.isNotBlank() }
-            ?: ErrorMessages.GENERIC_ERROR
-
+    fun setDialog(dialog: UiDialog) {
         _baseUiState.update {
-            it.copy(
-                errorDialog = DialogStateV1(
-                    title = WARNING_STRING,
-                    message = message
-                )
-            )
+            it.copy(dialog = dialog)
         }
     }
 
-    fun dismissError() {
+    fun dismissDialog() {
         _baseUiState.update {
-            it.copy(errorDialog = null)
+            it.copy(dialog = null)
         }
     }
+
 }
