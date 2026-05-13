@@ -42,6 +42,16 @@ subprojects {
                 // Disable for Jitpack
                 repositories {
                     mavenLocal()
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/boysmtv/android-mtv-based-core")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                                ?: System.getenv("GITHUB_PACKAGES_USER")
+                            password = System.getenv("GITHUB_TOKEN")
+                                ?: System.getenv("GITHUB_PACKAGES_TOKEN")
+                        }
+                    }
                 }
             }
 
