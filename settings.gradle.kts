@@ -13,15 +13,6 @@ pluginManagement {
 
         /* disable for using jitpack*/
         mavenLocal()
-        maven {
-            url = uri("https://maven.pkg.github.com/boysmtv/android-mtv-based-uicomponent")
-            credentials {
-                username = System.getenv("PACKAGES_USER")
-                    ?: System.getenv("GITHUB_ACTOR")
-                password = System.getenv("PACKAGES_TOKEN")
-                    ?: System.getenv("GITHUB_TOKEN")
-            }
-        }
 //        maven("https://jitpack.io")
     }
 }
@@ -34,6 +25,15 @@ dependencyResolutionManagement {
 
         /* disable for using jitpack*/
         mavenLocal()
+        maven {
+            url = uri("https://maven.pkg.github.com/boysmtv/android-mtv-based-uicomponent")
+            credentials {
+                username = System.getenv("PACKAGES_USER")
+                    ?: System.getenv("GITHUB_ACTOR")
+                password = System.getenv("PACKAGES_TOKEN")
+                    ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
 //        maven("https://jitpack.io")
     }
 }
