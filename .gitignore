@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# ai-agent generated archives
+.ai-agent/snapshots/
