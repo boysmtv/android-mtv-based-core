@@ -15,6 +15,11 @@ jobs:
   publish:
     name: Publish Core Packages
     runs-on: ubuntu-latest
+    env:
+      GITHUB_ACTOR: ${{ github.actor }}
+      GITHUB_TOKEN: ${{ github.token }}
+      PACKAGES_USER: ${{ secrets.PACKAGES_USER }}
+      PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
     steps:
       - name: Checkout
@@ -31,9 +36,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Publish packages
-        env:
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_TOKEN: ${{ github.token }}
         run: |
           chmod +x ./gradlew
           ./gradlew publish
